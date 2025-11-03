@@ -1,14 +1,14 @@
 {{ $currentPage := . }}
 <div class="card xl:card-side bg-base-300 shadow-sm mb-4 overflow-hidden">
     {{- with index .Params.images 0 }}
-        <figure>
+        <a href="{{ $currentPage.RelPermalink }}" class="flex items-center justify-center">
         {{- $imagePath := . }}
         {{- with $currentPage.Resources.GetMatch $imagePath }}
-            <img src="{{ .RelPermalink }}" alt="{{ $.Title }} Teaser Image" />
+            <img loading="lazy" class="object-cover w-full h-full" src="{{ .RelPermalink }}" alt="{{ $.Title }} Teaser Image" />
         {{- else }}
-            <img src="{{ $imagePath | relURL }}" alt="{{ $.Title }} Teaser Image" />
+            <img loading="lazy" src="{{ $imagePath | relURL }}" alt="{{ $.Title }} Teaser Image" />
         {{- end }}
-        </figure>
+        </a>
     {{- end }}
     <div class="card-body">
         <div class="content">
