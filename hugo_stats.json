@@ -4,13 +4,13 @@
       "a",
       "article",
       "aside",
+      "blockquote",
       "body",
       "button",
       "code",
       "div",
       "em",
       "fieldset",
-      "figure",
       "footer",
       "form",
       "h1",
@@ -38,9 +38,15 @@
       "section",
       "strong",
       "svg",
+      "table",
+      "tbody",
+      "td",
       "textarea",
+      "th",
+      "thead",
       "time",
       "title",
+      "tr",
       "ul"
     ],
     "classes": [
@@ -125,7 +131,6 @@
       "my-auto",
       "navbar",
       "object-cover",
-      "object-fill",
       "overflow-hidden",
       "p-6",
       "p-8",
@@ -158,12 +163,18 @@
       "xl:max-w-2/3"
     ],
     "ids": [
+      "-fts5-the-technical-core",
+      "-local-benchmark-caveats--insights",
+      "-solr-vs-fts5-the-comparison",
       "-the-components-mandate",
+      "-the-search-api-integration",
       "-why-your-app-still-feels-like-dial-up",
       "1-authorization-tying-jwts-to-the-request-lifecycle",
       "2-payload-generation-",
+      "architecture-inverted-index--snippets",
       "controller-as-sse-server-",
       "embracing-stateless-push-",
+      "fts5-the-right-scope",
       "option-a-json-payload-for-spas-data-first",
       "option-b-html-payload-for-mvc-apps-render-first",
       "phase-2-bash-scripts--pandoc--custom-lua-filters--success",
@@ -175,7 +186,9 @@
       "the-problem-of-nuances",
       "the-source-of-complexity",
       "the-trade-offs-",
-      "what-this-project-does"
+      "understanding-the-performance-profile",
+      "what-this-project-does",
+      "when-solr-is-necessary"
     ]
   }
 }
