@@ -15,15 +15,6 @@ use function Sugar\Core\Runtime\raw;
     <header class="mb-10 text-center">
         <h1 class="text-3xl lg:text-4xl mb-1 font-bold max-w-xl mx-auto"><?= $page->title ?></h1>
 
-        <!-- <?php $tags = (array)$page->taxonomies['tags'] ?? []; ?>
-        <div class="mt-4 text-center" s:notempty="$tags">
-            <ul>
-                <li class="inline-block" s:foreach="$tags as $tag">
-                    <a class="btn btn-xs" href="<?= $this->url('/tags/' . $tag . '/') ?>"><?= $tag ?></a>
-                </li>
-            </ul>
-        </div> -->
-
         <div class="divider mb-10 mt-6" s:if="$page->meta('date') instanceof \Cake\Chronos\Chronos">
             <time class="text-base-content/45" datetime="<?= $page->meta('date')->toIso8601String() ?>">
                 <?= $page->meta('date')->format('F j, Y') ?>
