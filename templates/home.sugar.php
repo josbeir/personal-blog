@@ -72,29 +72,29 @@
                 <article class="card bg-base-100 border-2 border-base-content/20 transition-all highlight-card" style="--highlight-index: <?= (int)$index ?>; opacity: 0; transform: translateY(12px);" s:foreach="$highlights as $index => $item">
                     <div class="card-body">
                         <?php $iconKey = (string)($item['icon'] ?? ''); ?>
-                        <div class="w-14 h-14 flex items-center justify-center mb-3">
-                            <svg s:if="$iconKey === 'architecture'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <div class="w-14 h-14 flex items-center justify-center mb-3" s:switch="$iconKey">
+                            <svg s:case="'architecture'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <rect x="3" y="10" width="6" height="10" rx="1"></rect>
                                 <rect x="15" y="6" width="6" height="14" rx="1"></rect>
                                 <path d="M9 15h6"></path>
                             </svg>
-                            <svg s:if="$iconKey === 'cakephp'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <svg s:case="'cakephp'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M4 12h16v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path>
                                 <path d="M8 12a2 2 0 1 1 4 0"></path>
                                 <path d="M14 12a2 2 0 1 1 4 0"></path>
                                 <path d="M7 9h10"></path>
                             </svg>
-                            <svg s:if="$iconKey === 'opensource'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <svg s:case="'opensource'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <circle cx="12" cy="12" r="9"></circle>
                                 <path d="M3 12h18"></path>
                                 <path d="M12 3a14 14 0 0 1 0 18"></path>
                                 <path d="M12 3a14 14 0 0 0 0 18"></path>
                             </svg>
-                            <svg s:if="$iconKey === 'drupal'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <svg s:case="'drupal'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M12 3c2.8 3.2 5 5 5 8a5 5 0 0 1-10 0c0-3 2.2-4.8 5-8z"></path>
                                 <path d="M8 13a4 4 0 0 0 8 0"></path>
                             </svg>
-                            <svg s:if="$iconKey !== 'architecture' && $iconKey !== 'cakephp' && $iconKey !== 'opensource' && $iconKey !== 'drupal'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <svg s:default xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="feature-card-icon h-8 w-8" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <circle cx="12" cy="12" r="9"></circle>
                                 <path d="M12 8v8"></path>
                                 <path d="M8 12h8"></path>

@@ -20,17 +20,6 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-	<script>
-		(() => {
-			try {
-				const saved = localStorage.getItem('theme');
-				const mode = (saved === 'light' || saved === 'dark')
-					? saved
-					: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-				document.documentElement.setAttribute('data-theme', mode === 'dark' ? 'spring-night' : 'spring-fun');
-			} catch (_) {}
-		})();
-	</script>
 	<s-vite src="['assets/css/site.css', 'assets/js/site.js']" />
 	<script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 </head>

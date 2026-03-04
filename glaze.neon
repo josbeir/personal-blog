@@ -16,7 +16,10 @@ site:
 		  url: /contact/
 taxonomies:
 	- tags
-	- categories
+
+extensions:
+	- llms-txt
+	- sitemap
 
 build:
 	vite:

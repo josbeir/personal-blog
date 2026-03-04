@@ -8,6 +8,13 @@ const THEMES = {
 
 const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
+function bootstrapTheme() {
+  try {
+    const mode = resolveMode();
+    document.documentElement.setAttribute(THEME_ATTR, THEMES[mode]);
+  } catch (_) {}
+}
+
 function resolveMode() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved === 'light' || saved === 'dark') {
@@ -43,6 +50,8 @@ function initThemeToggle() {
     }
   });
 }
+
+bootstrapTheme();
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initThemeToggle);
