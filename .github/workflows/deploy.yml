@@ -47,7 +47,7 @@ jobs:
       - name: Install Glaze via Composer
         run: |
           composer init --name josbeir/personal-blog --no-interaction
-          composer require josbeir/glaze:dev-main nikic/php-parser --prefer-dist --no-interaction --no-progress
+          composer require josbeir/glaze nikic/php-parser --prefer-dist --no-interaction --no-progress
 
       - name: Install npm dependencies
         run: npm ci

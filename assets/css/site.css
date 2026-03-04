@@ -212,19 +212,3 @@
     transform: translateY(0);
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-ambient-gradient {
-    animation: none;
-  }
-
-  .highlight-card {
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
-
-  .hero-ambient-orb {
-    animation: none;
-  }
-}
