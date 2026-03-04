@@ -28,7 +28,7 @@
         <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center w-full">
             <div class="lg:col-span-12 p-2">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-8">
-                    <div class="max-w-4xl order-2 lg:order-1">
+                    <div class="max-w-4xl order-2 lg:order-1 relatvie z-50">
                         <p class="text-xs uppercase tracking-[0.2em] text-primary mb-3">Who I am</p>
                         <h1 class="text-5xl md:text-6xl xl:text-7xl font-black uppercase leading-[0.9] tracking-tight mb-6"><?= $site->title ?></h1>
                         <p class="text-xl text-base-content/85 mb-6"><?= $site->meta('hero.description', $site->description ?? '') ?></p>
