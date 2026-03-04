@@ -24,7 +24,7 @@
             <span class="hero-ambient-orb hero-ambient-orb-b"></span>
             <span class="hero-ambient-orb hero-ambient-orb-c"></span>
         </div>
-        <div class="max-w-7xl mx-auto px-6 lg:px-10 min-h-[calc(100svh-4rem)] flex flex-col justify-center py-2 lg:py-4">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 min-h-[calc(100svh-4rem)] flex flex-col justify-center pt-8 pb-10 lg:py-4">
         <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center w-full">
             <div class="lg:col-span-12 p-2">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-8">
@@ -106,6 +106,13 @@
                 </article>
             </div>
         </div>
+
+        <div class="hidden lg:flex absolute left-1/2 -translate-x-1/2 bottom-8 items-center gap-2 text-xs uppercase tracking-[0.18em] text-base-content/60" aria-hidden="true">
+            <span>More below</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 animate-bounce" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"></path>
+            </svg>
+        </div>
         </div>
     </section>
 
@@ -148,7 +155,7 @@
         </div>
     </section>
 
-    <h2 class="mb-8 text-3xl"><?= $page->meta('recentPosts.title', 'Recent posts') ?></h2>
+    <h2 id="recent-posts" class="mb-8 text-3xl"><?= $page->meta('recentPosts.title', 'Recent posts') ?></h2>
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-15">
         <article class="card bg-base-300 border border-base-content/10 hover:border-primary/35 transition-all overflow-hidden h-full" s:foreach="$posts as $post">
             <?php $image = $post->meta('images.0'); ?>
@@ -169,5 +176,9 @@
                 </div>
             </div>
         </article>
+    </div>
+
+    <div class="flex justify-center mb-16">
+        <a href="<?= $this->url('/posts/') ?>" class="btn btn-primary btn-outline">All posts</a>
     </div>
 </s-template>

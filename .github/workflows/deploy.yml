@@ -37,7 +37,6 @@ jobs:
         with:
           php-version: 8.3
           extensions: intl, fileinfo
-          ini-values: display_errors=On, display_startup_errors=On, error_reporting=E_ALL, log_errors=On
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -54,7 +53,7 @@ jobs:
         run: npm ci
 
       - name: Build site with Glaze
-        run: php -d display_errors=1 -d display_startup_errors=1 -d error_reporting=E_ALL vendor/bin/glaze build -v
+        run: vendor/bin/glaze build -v
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
