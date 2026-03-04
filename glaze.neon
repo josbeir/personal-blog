@@ -1,0 +1,39 @@
+pageTemplate: page
+site:
+	title: "Jasper Smet"
+	description: "Freelance full stack developer, core CakePHP developer, and open source creator."
+	hero:
+		title: "Hi! I'm Jasper"
+		subtitle: "Freelance Full Stack Developer"
+		avatar: "avatar.webp"
+		description: "Belgium-based freelance full stack developer and core CakePHP developer, specializing in CakePHP, Drupal, and open source tooling."
+	nav:
+		- label: Home
+		  url: /
+		- label: Posts
+		  url: /posts/
+		- label: Contact
+		  url: /contact/
+taxonomies:
+	- tags
+	- categories
+
+build:
+	vite:
+		enabled: true
+		command: npm run build
+		defaultEntry: assets/css/site.css
+
+devServer:
+	vite:
+		enabled: true
+		host: '127.0.0.1'
+		port: 5174
+		command: 'npm run dev -- --host {host} --port {port} --strictPort'
+		defaultEntry: assets/css/site.css
+
+contentTypes:
+	post:
+		defaults:
+			template: post
+

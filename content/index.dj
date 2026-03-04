@@ -1,0 +1,50 @@
+---
+title: "Jasper Smet"
+description: "Freelance full stack developer focused on CakePHP, Drupal, and open source products."
+date: "2023-01-01T08:00:00-07:00"
+template: "home"
+navigation: false
+hero:
+  category: "Freelance Developer"
+  title: "Feelance full stack developer focused on CakePHP and Drupal."
+  subtitle: "I design, build, and scale web platforms — and I contribute as a core CakePHP developer."
+  primaryAction:
+    label: "Start a project"
+    href: "/contact/"
+  secondaryAction:
+    label: "Read my posts"
+    href: "/posts/"
+  highlightsTitle: "Core strengths"
+  highlights:
+    -
+      icon: "cakephp"
+      title: "Core CakePHP expertise"
+      description: "As a core CakePHP developer, I bring framework-level insight to architecture, performance, and best practices."
+    -
+      icon: "opensource"
+      title: "Open source mindset"
+      description: "I design practical tooling and workflows that improve developer experience and long-term project health."
+    -
+      icon: "drupal"
+      title: "Drupal architecture expertise"
+      description: "I design and scale Drupal platforms with strong content architecture, integration patterns, and long-term maintainability."
+projects:
+  title: "Featured projects"
+  items:
+    -
+      title: "Sugar"
+      description: "A PHP template engine with layout inheritance, reusable components, and context-aware escaping."
+      label: "Visit Sugar docs"
+      href: "https://josbeir.github.io/sugar/"
+      logo: "/sugar-logo.svg"
+    -
+      title: "Glaze"
+      description: "A fast static site generator in PHP combining Djot content, Sugar templates, and optional Vite."
+      label: "Visit Glaze docs"
+      href: "https://josbeir.github.io/glaze/"
+      logo: "/glaze-logo.svg"
+recentPosts:
+  title: "Recent posts"
+  ctaLabel: "View post"
+  limit: 9
+---
