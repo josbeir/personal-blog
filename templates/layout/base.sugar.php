@@ -17,9 +17,8 @@
 		</s-ifblock>
 		<?= $site->title ?? 'Glaze static site generator' ?>
 	</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+	<link href="https://fonts.bunny.net/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 	<s-vite src="['assets/css/site.css', 'assets/js/site.js']" />
 	<script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 </head>

@@ -1,4 +1,5 @@
 pageTemplate: page
+
 site:
 	title: "Jasper Smet"
 	description: "Freelance full stack developer, core CakePHP developer, and open source creator."
@@ -14,6 +15,7 @@ site:
 		  url: /posts/
 		- label: Contact
 		  url: /contact/
+
 taxonomies:
 	- tags
 
