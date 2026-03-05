@@ -10,13 +10,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="<?= $page->meta('description', $site->description ?? '') ?>">
 	<title s:trim>
 		<s-ifblock name="title">
 			<s-template s:block="title" /> |
 		</s-ifblock>
 		<?= $site->title ?? 'Glaze static site generator' ?>
 	</title>
+	<s-template s:include="../partials/meta" />
     <link rel="preconnect" href="https://fonts.bunny.net">
 	<link href="https://fonts.bunny.net/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 	<s-vite src="['assets/css/site.css', 'assets/js/site.js']" />

@@ -3,6 +3,7 @@ pageTemplate: page
 site:
 	title: "Jasper Smet"
 	description: "Freelance full stack developer, core CakePHP developer, and open source creator."
+	baseUrl: "https://www.jaspersmet.be"
 	hero:
 		title: "Hi! I'm Jasper"
 		subtitle: "Freelance Full Stack Developer"
@@ -20,9 +21,11 @@ taxonomies:
 	- tags
 
 extensions:
-	- llms-txt
-	- sitemap
-
+	llms-txt:
+	sitemap:
+	rss:
+		types:
+			- post
 build:
 	vite:
 		enabled: true
@@ -44,4 +47,3 @@ contentTypes:
 			  createPattern: "posts/{date:Y}"
 		defaults:
 			template: post
-
