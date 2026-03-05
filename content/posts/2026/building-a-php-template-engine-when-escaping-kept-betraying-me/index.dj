@@ -9,6 +9,8 @@ images:
     -  teaser.png
 ---
 
+> **TL;DR** — I built [Sugar](https://josbeir.github.io/sugar/), a PHP template engine that keeps your templates as real PHP files, adds directive-style attributes (`s:if`, `s:foreach`, `s:class`, …), context-aware escaping, layout inheritance, and a component system — without making you learn a new language. Check the [docs](https://josbeir.github.io/sugar/) if you want to skip straight to the code.
+
 ## The Breaking Point Wasn’t Performance. It Was Trust.
 
 Every developer has that one bug that doesn’t look dangerous until it quietly ruins your evening, your confidence, and eventually your architecture.
@@ -301,6 +303,8 @@ AI changed that equation entirely. It accelerated the research phase, helped val
 ## Closing: If Your Template Engine Feels Like a Negotiation, Fire It.
 
 I didn’t build Sugar because I wanted another shiny open-source project. I built it because I was done negotiating with tooling that made simple things hard and advanced things fragile.
+
+And if you want proof this isn't theoretical: **this very site is built with [Glaze](https://josbeir.github.io/glaze/)**, a static site generator I also wrote — which uses Sugar as its template engine. The templates rendering these posts, the layout, the components — all Sugar. Dogfooding at its most literal.
 
 The biggest win isn’t that Sugar has directives, components, or inheritance. The biggest win is that I can finally trust the view layer again, especially in the messy real-world scenarios where escaping, composition, and frontend integration collide.
 
