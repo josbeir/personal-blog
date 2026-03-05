@@ -12,7 +12,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title s:trim>
 		<s-ifblock name="title">
-			<s-template s:block="title" /> |
+			<s-template s:block="title" name="title" /> |
 		</s-ifblock>
 		<?= $site->title ?? 'Glaze static site generator' ?>
 	</title>
