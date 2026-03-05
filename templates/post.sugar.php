@@ -13,7 +13,7 @@ use function Sugar\Core\Runtime\raw;
 
 <s-template s:block="content">
     <header class="mb-10 text-center">
-        <h1 class="text-3xl lg:text-4xl mb-1 font-bold max-w-xl mx-auto"><?= $page->title ?></h1>
+        <h1 class="text-2xl md:text-3xl lg:text-4xl mb-10 font-extrabold max-w-4xl mx-auto leading-snug tracking-tight"><?= $page->title ?></h1>
 
         <div class="divider mb-10 mt-6" s:if="$page->meta('date') instanceof \Cake\Chronos\Chronos">
             <time class="text-base-content/45" datetime="<?= $page->meta('date')->toIso8601String() ?>">

@@ -124,7 +124,7 @@
     animation: heroFloat 9s ease-in-out infinite;
   }
 
-  .hero-ambient-orb-a {
+  .hero-ambient-orb-0 {
     width: 22rem;
     height: 22rem;
     top: -8rem;
@@ -132,7 +132,7 @@
     animation-name: heroFloatA;
   }
 
-  .hero-ambient-orb-b {
+  .hero-ambient-orb-1 {
     width: 18rem;
     height: 18rem;
     right: 12%;
@@ -141,7 +141,7 @@
     animation-delay: -2.5s;
   }
 
-  .hero-ambient-orb-c {
+  .hero-ambient-orb-2 {
     width: 14rem;
     height: 14rem;
     right: -3rem;

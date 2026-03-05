@@ -39,6 +39,9 @@ devServer:
 
 contentTypes:
 	post:
+		paths:
+			- match: posts
+			  createPattern: "posts/{date:Y}"
 		defaults:
 			template: post
 

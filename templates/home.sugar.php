@@ -11,18 +11,15 @@
 <title s:prepend="title"><?= $page->title ?></title>
 
 <s-template s:block="content">
-    <?php
+<?php
     $highlights = (array)$page->meta('hero.highlights', []);
     $projects = (array)$page->meta('projects.items', []);
-    $posts = $this->type('post')->byDate('desc')->take((int)$page->meta('recentPosts.limit', 9));
-    ?>
-
+    $posts = $this->type('post')->byDate('desc')->take((int)$page->meta('recentPosts.limit', 3));
+?>
     <section class="relative left-1/2 w-screen -translate-x-1/2 -mt-27 mb-16 pt-16 border-b-2 border-base-content/20 bg-base-200 overflow-hidden">
         <div class="hero-ambient" aria-hidden="true">
             <span class="hero-ambient-gradient"></span>
-            <span class="hero-ambient-orb hero-ambient-orb-a"></span>
-            <span class="hero-ambient-orb hero-ambient-orb-b"></span>
-            <span class="hero-ambient-orb hero-ambient-orb-c"></span>
+            <span s:times="3 as $x" class="hero-ambient-orb hero-ambient-orb-<?= $x ?>"></span>
         </div>
         <div class="max-w-7xl mx-auto px-6 lg:px-10 min-h-[calc(100svh-4rem)] flex flex-col justify-center pt-8 pb-10 lg:py-4">
         <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center w-full">
@@ -157,25 +154,15 @@
 
     <h2 id="recent-posts" class="mb-8 text-3xl"><?= $page->meta('recentPosts.title', 'Recent posts') ?></h2>
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-15">
-        <article class="card bg-base-300 border border-base-content/10 hover:border-primary/35 transition-all overflow-hidden h-full" s:foreach="$posts as $post">
-            <?php $image = $post->meta('images.0'); ?>
-            <a s:if="$image" href="<?= $this->url($post->urlPath) ?>" class="block">
-                <img loading="lazy" class="w-full aspect-video object-cover" src="<?= $this->url($post->urlPath . ltrim((string)$image, '/')) ?>" alt="<?= $post->title ?> Teaser Image" />
-            </a>
-            <div s:if="empty($image)" class="w-full aspect-video bg-base-200 border-b border-base-content/10"></div>
-            <div class="card-body">
-                <div class="content flex-1">
-                    <h3 class="text-2xl leading-tight mb-2"><a class="hover:text-primary transition-colors" href="<?= $this->url($post->urlPath) ?>"><?= $post->title ?></a></h3>
-                    <p class="text-sm text-base-content/60 mb-3" s:if="$post->meta('date') instanceof \Cake\Chronos\Chronos">
-                        <?= $post->meta('date')->format('F j, Y') ?>
-                    </p>
-                    <p class="text-base-content/80"><?= mb_substr(strip_tags((string)$post->meta('description', '')), 0, 180) ?></p>
-                </div>
-                <div class="card-actions mt-4 justify-end">
-                    <a class="btn btn-outline btn-primary btn-md" href="<?= $this->url($post->urlPath) ?>"><?= $page->meta('recentPosts.ctaLabel', 'View post') ?></a>
-                </div>
-            </div>
-        </article>
+        <s-template s:foreach="$posts as $post">
+            <s-template
+                s:include="partials/post-teaser"
+                s:with="[
+                    'post' => $post,
+                    'page' => $page,
+                ]"
+            />
+        </s-template>
     </div>
 
     <div class="flex justify-center mb-16">

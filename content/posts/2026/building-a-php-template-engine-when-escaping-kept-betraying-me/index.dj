@@ -1,0 +1,311 @@
+---
+title: "I Built a Full-Blown PHP Template Engine Faster Than I Expected (Because Escaping Kept Betraying Me)"
+description: "Why I built Sugar after fighting template engine edge cases, how context-aware escaping and readable syntax changed my workflow, and what PHP teams can learn from it."
+date: 2026-03-05
+tags: [PHP, Template Engine, Escaping, Security, DX]
+draft: false
+type: post
+images:
+    -  teaser.png
+---
+
+## The Breaking Point Wasn’t Performance. It Was Trust.
+
+Every developer has that one bug that doesn’t look dangerous until it quietly ruins your evening, your confidence, and eventually your architecture.
+
+Mine was a template bug.
+
+Not a dramatic one. No burning servers. No pager alerts. Just that deeply annoying kind: “why is this HTML attribute suddenly broken?” followed by “why is this JSON string escaped in one place and not escaped in another?” followed by “why am I hand-patching output in 2026 like it’s 2009?”
+
+![Sugar](teaser.png)
+
+I built **Sugar** because I felt limited by existing template engines. I've used engines like Twig and Latte in real projects, and yes, they're mature and they solve real problems. But honestly? I've always found them chaotic to look at. Complex templates in Twig or Latte never felt *elegant* to me — too much custom DSL syntax layered onto HTML, tags that feel foreign, filter chains that read like a treasure map. Others may disagree, and that's fine. Taste is subjective. But the visual noise was always there, nagging.
+
+Beyond aesthetics, in day-to-day work it often felt like I was wrestling the template language itself instead of shipping features.
+
+And the final straw was simple: **Alpine-style object expressions inside attributes were easy to get wrong when escaping behavior wasn’t context-aware enough**. Sometimes output was over-escaped. Sometimes it was broken. Sometimes it was “technically safe” but semantically useless.
+
+That’s the kind of problem that makes you stop arguing about syntax preferences and start writing a compiler.
+
+In this post, I’ll walk through:
+
+- why I started Sugar,
+- what I was trying to fix (and what I intentionally did **not** try to fix),
+- the wrong-way vs right-way patterns,
+- and how this fits a pragmatic PHP mindset where **PHP in the view layer is not a sin**, it’s a tool.
+
+If you’re tired of templating folklore and want practical trade-offs, this is for you.
+
+## The Real Problem: Template Engines That Fight Real-World Markup
+
+### "It Works" Is Not the Same as "It Composes"
+
+Most template engines solve the baseline problems:
+
+- basic variable escaping,
+- loops/conditions,
+- includes,
+- inheritance.
+
+Great. Necessary. Table stakes.
+
+But real projects don’t live in tutorial mode. They live in:
+
+- `x-data` attributes with JSON-like payloads,
+- partials that need scoped variables,
+- reusable components that must merge attributes sanely,
+- inheritance rules that shouldn’t produce spooky wrapper behavior.
+
+When these pieces collide, many template layers start leaking abstraction. You end up writing little “safe output rituals” everywhere, and each ritual is a tiny tax on readability and confidence.
+
+### The Alpine Pain Point (a.k.a. The Escaping Tax)
+
+Here’s a pattern many of us use:
+
+```html
+<div x-data="{ open: false, user: ... }"></div>
+```
+
+Now inject dynamic data and things get interesting fast.
+
+#### The Wrong Way
+
+```php
+<div x-data="{ user: '<?= $userName ?>', prefs: <?= json_encode($prefs) ?> }"></div>
+```
+
+Why this is fragile:
+
+- You mix manual quoting + manual JSON + HTML attribute encoding concerns.
+- `json_encode()` alone does not solve HTML attribute context.
+- One quote mismatch and your front-end parser becomes an archaeologist.
+
+#### The Right Way in Sugar
+
+```sugar
+<div x-data="{ user: <?= $userName ?>, prefs: <?= $prefs |> json() ?> }"></div>
+```
+
+Sugar applies **context-aware escaping** based on output position. In plain text, it escapes as HTML text. In an attribute, it escapes as attribute-safe output. For JSON payloads, `|> json()` compiles to context-safe JSON routines, including attribute-safe JSON when needed.
+
+That means I can write templates like a human and still get compiler-level guardrails.
+
+### A Side Note on SSR and "Old School" Thinking
+
+I'll admit it: I'm a bit old school. I still firmly believe **server-side rendering has a place** — a big one — and that the industry's full-SPA-everything instinct of the last decade overcorrected harder than it needed to.
+
+That said, I'm not anti-JavaScript. Far from it. What JS frameworks got right — and what I genuinely admire — is the **directive-style approach**. `v-if`, `x-show`, `@click`, `x-data` — these are elegant. They keep behavior close to the markup without turning your HTML into an unreadable component soup. They're declarative without being alienating.
+
+Sugar's `s:if`, `s:foreach`, `s:class` are a direct acknowledgment of that influence. The pattern works because it respects the structure of the document. It felt wrong not to bring that same rhythm to the server-rendered world.
+
+So: SSR with directive-style ergonomics, sprinkling Alpine where interactivity is actually needed. That's a stack I can still feel good about in 2026.
+## Why I Didn’t Just "Use Less PHP"
+
+I’ve seen this issue across plain PHP stacks and framework-heavy projects alike. Whether it’s Twig in Drupal, Blade-like patterns, or custom rendering layers, the pain point is the same: real-world attribute composition collides with escaping edge cases and front-end behavior.
+
+Not business logic spaghetti. Not accidental side effects. Just practical rendering logic where it belongs.
+
+There’s a recurring internet argument that template languages should ban “too much PHP” for purity reasons. My position is opinionated and simple:
+
+- **PHP in templates should be allowed**.
+- **Abuse should be discouraged by design and conventions**.
+- **Restriction should be optional, not mandatory dogma**.
+
+You can build a clean view layer without pretending PHP is radioactive.
+
+### Two Different Template Use Cases People Keep Mixing Up
+
+This matters a lot.
+
+1. **Application templates** (your team writes them).
+2. **User-authored templates** (your users write them, e.g. Liquid-like scenarios).
+
+These are not the same risk profile.
+
+For application templates, full PHP capability is often a productivity multiplier when paired with code review and team discipline.
+
+For user-authored templates, sandboxing and restricted DSLs are essential.
+
+Trying to force one model onto both scenarios creates bad tooling for everyone.
+
+Sugar is intentionally designed for **developer-authored templates** first.
+
+## Syntax Matters More Than People Admit
+
+There’s a mythology in backend circles that syntax is superficial. “If it compiles, ship it.”
+
+No.
+
+Syntax is ergonomics. Ergonomics drives correctness. Correctness reduces bugs.
+
+When syntax is noisy, developers cut corners. When syntax is readable, developers keep intent visible.
+
+### Your Editor Isn't Blind Anymore
+
+This is one that rarely gets talked about enough: **native editor support**.
+
+With Twig, Latte, or most compiled DSL-based engines, your editor sees an alien language. Variable types? Unknown. Autocompletion on method calls? Gone. PHPStan or Psalm catching a typo in a template expression? Not a chance.
+
+Because Sugar templates are just PHP files — `<?= $var ?>` is real PHP — your editor treats them exactly as such. PhpStorm, VS Code with Intelephense, whatever your setup is: you get full type hinting, autocompletion, go-to-definition, and static analysis on your template code out of the box.
+
+Is it perfect? Not entirely. Directive attributes like `s:foreach` or `s:if` are not (yet?) IDE-aware at the directive level, so those expressions don't get the same treatment. But the PHP expressions inside your templates — the parts that actually produce output — are fully visible to your toolchain. That alone is a huge quality-of-life improvement over a black-box DSL.
+
+Sugar uses directive-style attributes (`s:*`) to keep structure familiar while adding expressive power:
+
+```sugar
+<s-template s:extends="../layouts/base.sugar.php"></s-template>
+
+<title s:block="title">Posts</title>
+
+<main s:block="content">
+	<h1>Latest posts</h1>
+	<ul>
+		<li s:foreach="$posts as $post">
+			<a href="/posts/<?= $post->slug ?>"><?= $post->title ?></a>
+		</li>
+	</ul>
+</main>
+```
+
+You keep HTML shape, add behavior where needed, and avoid learning an entirely separate mini-language for every basic control structure.
+
+## Wrong Way vs Right Way: Inheritance and Composition
+
+Template inheritance often looks easy until you have three layouts, optional blocks, and one teammate who “just added a wrapper div real quick.”
+
+### Explicit Block Semantics
+
+Sugar makes block behavior explicit via `s:block`, `s:append`, `s:prepend`, and `s:parent`.
+
+```sugar
+<!-- layouts/base.sugar.php -->
+<main s:block="content">
+	<p>Default content</p>
+</main>
+
+<!-- pages/home.sugar.php -->
+<s-template s:extends="../layouts/base.sugar.php"></s-template>
+
+<s-template s:block="content">
+	<s-template s:parent />
+	<section class="welcome">
+		<h1>Dashboard</h1>
+	</section>
+</s-template>
+```
+
+Why this helps:
+
+- parent placement is explicit,
+- intent is local and reviewable,
+- no magic comments or undocumented order rules.
+
+## Components Without the "Design System Cult" Ceremony
+
+I like components. I do not like component theology.
+
+Sugar components are file-based and practical. A component is just a template with clear props and slots.
+
+### Component Example
+
+```sugar
+<!-- components/s-alert.sugar.php -->
+<?php
+$variant ??= 'info';
+?>
+
+<article class="alert" s:class="['alert--danger' => $variant === 'danger']">
+	<h3 s:slot="title">Notice</h3>
+	<div s:slot>
+		<?= $slot ?>
+	</div>
+</article>
+```
+
+Usage:
+
+```sugar
+<s-alert s:bind="['variant' => 'danger']" class="mb-4" x-data="{ dismissed: false }">
+	<h4 s:slot="title">Deploy failed</h4>
+	Rollback started. Check queue workers.
+</s-alert>
+```
+
+What’s happening and why it matters:
+
+- `s:bind` passes typed intent (props), not random attributes.
+- non-prop attributes (like `class`, `x-data`) merge onto the root element.
+- slots keep semantic control with caller-defined markup.
+
+This is the sweet spot: powerful enough for production UI, simple enough to read at 2AM.
+
+
+## Escaping: The Security Feature That Shouldn’t Feel Like Punishment
+
+### The Wrong Way: Bypass First, Ask Questions Later
+
+```sugar
+<div><?= $commentBody |> raw() ?></div>
+```
+
+If `$commentBody` contains user input, this is a security incident waiting for a calendar invite.
+
+### The Right Way: Default Safe, Override Rarely
+
+```sugar
+<div><?= $commentBody ?></div>
+```
+
+Sugar escapes according to context automatically.
+
+Only use raw output for trusted, pre-sanitized HTML (e.g., content filtered server-side by a strict sanitizer you control and test).
+
+When you need structured data for JavaScript or Alpine usage:
+
+```sugar
+<script>
+	const payload = <?= $payload |> json() ?>;
+</script>
+
+<div x-data="{ data: <?= $payload |> json() ?> }"></div>
+```
+
+This gives you data transport without punching holes through your escape model.
+
+## The Build: What "Faster Than Expected" Actually Means
+
+To be clear: I didn't build Sugar in a weekend. But I also didn't need months.
+
+Where it started was surprisingly humble. I had theoretical notes. Just notes — written observations about how a **Lexer** and a **Parser** would need to behave in a template context specifically. Not how they work in general (that literature is everywhere), but what the unique constraints of HTML-embedded template compilation actually demand: preserving markup structure, understanding attribute context, tracking nesting for directives, not destroying the document while transforming it.
+
+Those notes sat for a while because I knew the implementation would be a rabbit hole. Previous-me would've launched a research marathon, burned two months on architecture astronautics, and shipped nothing.
+
+What eventually got built:
+
+- a lexer + parser pipeline for HTML-embedded template syntax,
+- an AST-driven compilation model,
+- inheritance and includes with explicit block semantics,
+- components with slots and scoped props,
+- context-aware escaping across HTML, attributes, JS, CSS, and URL contexts,
+- practical directives for control flow and attribute computation,
+- enough integration hooks for real apps.
+
+It's not a toy. It has near-**100% test coverage** and passes **PHPStan level 10** static analysis. For a side project that started as margin notes, that's not nothing.
+
+Could I have spent six months bikeshedding the AST node hierarchy? Obviously. Developers will bike-shed anything, including naming private methods that nobody outside the class will ever see. But constraints are a feature. Staying focused forced me to prioritize correctness and ergonomics over architecture theater.
+
+And look — less than a year ago I wouldn't have even dared to start this. Not because of fear, but because I simply didn't have the time budget to research every rabbit hole *and* implement at this level of quality simultaneously.
+
+AI changed that equation entirely. It accelerated the research phase, helped validate edge cases quickly, and gave me a tireless sounding board at every stage of the compiler design. That's what made the quality bar achievable without the soul-crushing timeline. It doesn't replace engineering judgment — it amplifies it, provided you actually know what "good" looks like going in.
+
+## Closing: If Your Template Engine Feels Like a Negotiation, Fire It.
+
+I didn’t build Sugar because I wanted another shiny open-source project. I built it because I was done negotiating with tooling that made simple things hard and advanced things fragile.
+
+The biggest win isn’t that Sugar has directives, components, or inheritance. The biggest win is that I can finally trust the view layer again, especially in the messy real-world scenarios where escaping, composition, and frontend integration collide.
+
+And if this sounds provocative, good. Here’s the question worth arguing about:
+
+**Should template engines optimize for theoretical purity, or for the actual bugs developers hit every week?**
+
+I know where I stand.
