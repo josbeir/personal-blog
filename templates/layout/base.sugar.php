@@ -17,6 +17,8 @@
 		<?= $site->title ?? 'Glaze static site generator' ?>
 	</title>
 	<s-template s:include="../partials/meta" />
+	<link rel="icon" type="image/svg+xml" href="<?= $this->url('/favicon.svg') ?>">
+	<link rel="shortcut icon" href="<?= $this->url('/favicon.svg') ?>">
     <link rel="preconnect" href="https://fonts.bunny.net">
 	<link href="https://fonts.bunny.net/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 	<s-vite src="['assets/css/site.css', 'assets/js/site.js']" />
