@@ -50,6 +50,11 @@ export const fr = {
   },
 
   projects: {
+    harv: {
+      description:
+        'Une interface terminal rapide pour le suivi du temps Harvest. Démarrez des chronomètres, enregistrez des heures et gérez votre timesheet sans quitter le terminal.',
+      label: 'Voir sur GitHub',
+    },
     sugar: {
       description:
         'Un moteur de templates PHP avec h\u00e9ritage de mise en page, composants r\u00e9utilisables et \u00e9chappement contextuel.',

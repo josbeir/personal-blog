@@ -50,6 +50,11 @@ export const nl = {
   },
 
   projects: {
+    harv: {
+      description:
+        'Een snelle terminal UI voor Harvest-tijdregistratie. Start timers, log uren en beheer je timesheet zonder de terminal te verlaten.',
+      label: 'Bekijk op GitHub',
+    },
     sugar: {
       description:
         'Een PHP template engine met layout-overerving, herbruikbare componenten en contextbewuste escaping.',

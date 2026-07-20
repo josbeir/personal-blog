@@ -50,6 +50,11 @@ export const en = {
   },
 
   projects: {
+    harv: {
+      description:
+        'A fast terminal UI for Harvest time tracking. Start timers, log hours, and manage your timesheet without leaving the terminal.',
+      label: 'View on GitHub',
+    },
     sugar: {
       description:
         'A PHP template engine with layout inheritance, reusable components, and context-aware escaping.',
