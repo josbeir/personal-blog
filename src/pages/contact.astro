@@ -1,16 +1,9 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ContactForm from '../../components/ContactForm.astro';
-import { getContactPageData } from '../../i18n/index';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { getContactPageData } from '../i18n/index';
 
-export async function getStaticPaths() {
-  return [
-    { params: { locale: 'nl' } },
-    { params: { locale: 'fr' } },
-  ];
-}
-
-const { locale } = Astro.params;
+const locale = 'en';
 const data = getContactPageData(locale);
 ---
 

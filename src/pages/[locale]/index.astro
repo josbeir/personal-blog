@@ -5,11 +5,14 @@ import SocialLinks from '../../components/SocialLinks.astro';
 import HighlightCards from '../../components/HighlightCards.astro';
 import ProjectCards from '../../components/ProjectCards.astro';
 import PostTeaser from '../../components/PostTeaser.astro';
-import { t, getSiteData, getHomepageHighlights, getFeaturedProjects, getHomepageIntro, localePaths } from '../../i18n/index';
+import { t, getSiteData, getHomepageHighlights, getFeaturedProjects, getHomepageIntro } from '../../i18n/index';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  return localePaths();
+  return [
+    { params: { locale: 'nl' } },
+    { params: { locale: 'fr' } },
+  ];
 }
 
 const { locale } = Astro.params;

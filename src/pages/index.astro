@@ -9,7 +9,7 @@ import { t, getSiteData, getHomepageHighlights, getFeaturedProjects, getHomepage
 import { getCollection } from 'astro:content';
 
 const locale = 'en';
-const postsPrefix = '/en/posts/';
+const postsPrefix = '/posts/';
 const siteData = getSiteData(locale);
 const highlights = getHomepageHighlights(locale);
 const projects = await getFeaturedProjects(locale);

@@ -12,7 +12,7 @@ const date = data.date;
 const teaserImg = data.image;
 const desc = data.description?.substring(0, 180) ?? '';
 const locale = Astro.currentLocale ?? 'en';
-const postsPrefix = `/${locale}/posts/`;
+const postsPrefix = locale === 'en' ? '/posts/' : `/${locale}/posts/`;
 ---
 
 <article class="card bg-base-300 border border-base-content/10 hover:border-primary/35 transition-all overflow-hidden h-full">

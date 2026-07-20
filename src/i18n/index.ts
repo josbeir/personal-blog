@@ -27,7 +27,7 @@ export function t(locale: string, key: string, params?: Record<string, string>):
 }
 
 export function getSiteData(locale: string) {
-  const prefix = `/${locale}`;
+  const prefix = locale === 'en' ? '' : `/${locale}`;
   return {
     description: t(locale, 'site.description'),
     hero: {

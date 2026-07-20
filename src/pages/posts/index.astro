@@ -1,17 +1,10 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import PostTeaser from '../../../components/PostTeaser.astro';
-import { getPostsPageData } from '../../../i18n/index';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostTeaser from '../../components/PostTeaser.astro';
+import { getPostsPageData } from '../../i18n/index';
 import { getCollection } from 'astro:content';
 
-export async function getStaticPaths() {
-  return [
-    { params: { locale: 'nl' } },
-    { params: { locale: 'fr' } },
-  ];
-}
-
-const { locale } = Astro.params;
+const locale = 'en';
 const data = getPostsPageData(locale);
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
