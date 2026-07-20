@@ -70,6 +70,7 @@ const siteData = getSiteData(locale);
         const e = document.querySelector('[data-theme-toggle]');
         if (e instanceof HTMLInputElement) e.addEventListener('change', () => { const d = e.checked ? 'dark' : 'light'; localStorage.setItem(s, d); a(d); });
         q.addEventListener('change', () => { if (localStorage.getItem(s) === null) a(r()); });
+        document.querySelectorAll('a[href^="http"]').forEach((l) => { if (!l.target) { l.target = '_blank'; l.rel = 'noopener noreferrer'; } });
       }
       document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', i) : i();
     </script>
