@@ -1,4 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="14" fill="#1a1a2e"/>
-  <text x="32" y="44" text-anchor="middle" font-family="monospace" font-size="28" font-weight="bold" fill="#e8a838">harv</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" fill="none" viewBox="0 0 360 360">
+  <defs>
+    <linearGradient id="top" x1="180" x2="180" y1="50" y2="170" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#faa73b"/>
+      <stop offset="1" stop-color="#f47920"/>
+    </linearGradient>
+    <linearGradient id="left" x1="90" x2="180" y1="170" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e85d04"/>
+      <stop offset="1" stop-color="#d44a00"/>
+    </linearGradient>
+    <linearGradient id="right" x1="270" x2="180" y1="170" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f47920"/>
+      <stop offset="1" stop-color="#c24100"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="180" x2="180" y1="95" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(30, 25)">
+    <!-- Top face -->
+    <path d="M150 20 L290 95 L150 170 L10 95 Z" fill="url(#top)" stroke="#e85d04" stroke-width="3"/>
+    <!-- Left face -->
+    <path d="M150 170 L10 95 L10 220 L150 295 Z" fill="url(#left)" stroke="#c24100" stroke-width="3"/>
+    <!-- Right face -->
+    <path d="M150 170 L290 95 L290 220 L150 295 Z" fill="url(#right)" stroke="#c24100" stroke-width="3"/>
+
+    <!-- Timer circle on top face -->
+    <circle cx="150" cy="95" r="32" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="5"/>
+    <circle cx="150" cy="95" r="28" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="2"/>
+    <!-- Clock hands -->
+    <line x1="150" y1="95" x2="150" y2="73" stroke="#fff" stroke-opacity=".7" stroke-width="3" stroke-linecap="round"/>
+    <line x1="150" y1="95" x2="166" y2="86" stroke="#fff" stroke-opacity=".6" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="150" cy="95" r="4" fill="#fff" fill-opacity=".8"/>
+
+    <!-- Gloss highlight streak -->
+    <path d="M135 35 L165 52 L145 155 L115 138 Z" fill="url(#gloss)" opacity=".6"/>
+
+    <!-- Decorative dots -->
+    <circle cx="80" cy="180" r="4" fill="#fff" fill-opacity=".25"/>
+    <circle cx="100" cy="210" r="3" fill="#fff" fill-opacity=".2"/>
+    <circle cx="220" cy="130" r="4" fill="#fff" fill-opacity=".25"/>
+    <circle cx="250" cy="180" r="3.5" fill="#fff" fill-opacity=".2"/>
+    <circle cx="200" cy="200" r="3" fill="#fff" fill-opacity=".18"/>
+    <circle cx="60" cy="145" r="3" fill="#fff" fill-opacity=".2"/>
+  </g>
 </svg>
