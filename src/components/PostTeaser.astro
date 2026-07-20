@@ -11,7 +11,7 @@ const { data } = post;
 const date = data.date;
 const teaserImg = data.image;
 const desc = data.description?.substring(0, 180) ?? '';
-const locale = Astro.currentLocale!;
+const locale = Astro.currentLocale ?? 'en';
 const postsPrefix = `/${locale}/posts/`;
 ---
 
@@ -38,7 +38,7 @@ const postsPrefix = `/${locale}/posts/`;
     </div>
     <div class="card-actions mt-4 justify-end">
       <a class="btn btn-outline btn-primary btn-md" href={`${postsPrefix}${post.slug}/`}>
-        {t(Astro.currentLocale!, 'read_more')}
+        {t(locale, 'read_more')}
       </a>
     </div>
   </div>

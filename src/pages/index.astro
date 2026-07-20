@@ -1,16 +1,76 @@
 ---
-// Redirect / to /en/
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroAmbient from '../components/HeroAmbient.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import HighlightCards from '../components/HighlightCards.astro';
+import ProjectCards from '../components/ProjectCards.astro';
+import PostTeaser from '../components/PostTeaser.astro';
+import { t, getSiteData, getHomepageHighlights, getFeaturedProjects, getHomepageIntro } from '../i18n/index';
+import { getCollection } from 'astro:content';
+
+const locale = 'en';
+const postsPrefix = '/en/posts/';
+const siteData = getSiteData(locale);
+const highlights = getHomepageHighlights(locale);
+const projects = await getFeaturedProjects(locale);
+const intro = getHomepageIntro(locale);
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const recentPosts = posts.slice(0, 3);
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0;url=/en/" />
-    <link rel="canonical" href="/en/" />
-    <title>Redirecting...</title>
-  </head>
-  <body>
-    <p>Redirecting to <a href="/en/">/en/</a></p>
-  </body>
-</html>
+<BaseLayout title={intro.title} description={intro.description}>
+  <section class="relative left-1/2 w-screen -translate-x-1/2 -mt-27 mb-16 pt-16 border-b-2 border-base-content/20 bg-base-200 overflow-hidden">
+    <HeroAmbient />
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 min-h-[calc(100svh-4rem)] flex flex-col justify-center pt-8 pb-10 lg:py-4">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center w-full">
+        <div class="lg:col-span-12 p-2">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-8">
+            <div class="max-w-4xl order-2 lg:order-1 relative z-50">
+              <p class="text-xs uppercase tracking-[0.2em] text-primary mb-3">{t(locale, 'who_i_am')}</p>
+              <h1 class="text-5xl md:text-6xl xl:text-7xl font-black uppercase leading-[0.9] tracking-tight mb-6">Jasper Smet</h1>
+              <p class="text-xl text-base-content/85 mb-6">{siteData.hero.description}</p>
+              <SocialLinks />
+            </div>
+
+            {siteData.hero.avatar && (
+              <div class="avatar shrink-0 mx-auto lg:mx-0 order-1 lg:order-2">
+                <div class="w-64 sm:w-72 lg:w-80 rounded-box overflow-hidden border-2 border-base-content/20">
+                  <img
+                    src={`/${siteData.hero.avatar}`}
+                    alt={siteData.hero.title}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div id="hero-highlights" class="mt-6 lg:mt-8 w-full">
+        <HighlightCards highlights={highlights} />
+      </div>
+
+      <div class="hidden lg:flex absolute left-1/2 -translate-x-1/2 bottom-8 items-center gap-2 text-xs uppercase tracking-[0.18em] text-base-content/60" aria-hidden="true">
+        <span>{t(locale, 'more_below')}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 animate-bounce" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="text-3xl mb-6">{t(locale, 'projects_title')}</h2>
+    <ProjectCards projects={projects} />
+  </section>
+
+  <h2 id="recent-posts" class="mb-8 text-3xl">{t(locale, 'recent_posts_title')}</h2>
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-15">
+    {recentPosts.map((post) => <PostTeaser post={post} />)}
+  </div>
+
+  <div class="flex justify-center mb-16">
+    <a href={postsPrefix} class="btn btn-primary btn-outline">{t(locale, 'all_posts')}</a>
+  </div>
+</BaseLayout>

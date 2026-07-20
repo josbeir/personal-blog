@@ -1,8 +1,9 @@
 ---
 import { t, getSiteData } from '../i18n/index';
 
-const siteData = getSiteData(Astro.currentLocale!);
-const currentLang = Astro.currentLocale!.toUpperCase();
+const locale = Astro.currentLocale ?? 'en';
+const siteData = getSiteData(locale);
+const currentLang = locale.toUpperCase();
 const languages = [
   { code: 'en', label: 'English' },
   { code: 'nl', label: 'Nederlands' },
@@ -13,12 +14,12 @@ const languages = [
 <header class="border-b border-primary/15 bg-base-100/90 backdrop-blur supports-backdrop-filter:bg-base-100/70 sticky top-0 z-30">
   <div class="navbar max-w-7xl mx-auto px-4 lg:px-8">
     <div class="navbar-start">
-      <label for="mobile-nav-drawer" class="btn btn-ghost btn-square lg:hidden" aria-label={t(Astro.currentLocale!, 'open_menu')}>
+      <label for="mobile-nav-drawer" class="btn btn-ghost btn-square lg:hidden" aria-label={t(locale, 'open_menu')}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-5 w-5 stroke-current">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </label>
-      <a href={`/${Astro.currentLocale}/`} class="btn btn-ghost text-xl px-2">
+      <a href={`/${locale}/`} class="btn btn-ghost text-xl px-2">
         <span class="font-semibold">Jasper Smet</span>
       </a>
     </div>
@@ -46,7 +47,7 @@ const languages = [
             <li>
               <a
                 href={`/${lang.code}/`}
-                class:list={{ 'font-bold': lang.code === Astro.currentLocale }}
+                class:list={{ 'font-bold': lang.code === locale }}
               >
                 {lang.label}
               </a>
@@ -72,7 +73,7 @@ const languages = [
         </svg>
       </label>
       <a href={`/${Astro.currentLocale}/contact/`} class="btn btn-primary btn-sm lg:btn-md">
-        {t(Astro.currentLocale!, 'get_in_touch')}
+        {t(locale, 'get_in_touch')}
       </a>
     </div>
   </div>
