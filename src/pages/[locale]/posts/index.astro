@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostTeaser from '../../../components/PostTeaser.astro';
+import { getPostsPageData, localePaths } from '../../../i18n/index';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  return localePaths();
+}
+
+const { locale } = Astro.params;
+const data = getPostsPageData(locale);
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <h1 class="text-3xl mb-6">{data.title}</h1>
+  <section class="mb-6 prose max-w-none">
+    {data.intro.split('\n\n').map((p) => <p>{p}</p>)}
+  </section>
+
+  <div class="grid gap-6 md:grid-cols-3">
+    {posts.map((post) => <PostTeaser post={post} />)}
+  </div>
+</BaseLayout>

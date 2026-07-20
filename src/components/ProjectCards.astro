@@ -1,0 +1,61 @@
+---
+import { t } from '../i18n/index';
+
+interface Project {
+  title: string;
+  description: string;
+  label: string;
+  href: string;
+  logo?: string;
+}
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<div class="grid gap-6 md:grid-cols-2">
+  {projects.map((project) => (
+    <article class="card relative overflow-visible bg-base-300 border border-base-content/10 hover:border-primary/40 transition-all">
+      <div class="card-body gap-4 pt-14">
+        {project.logo && (
+          <div class="absolute -top-12 right-4 w-24 h-24 flex items-center justify-center">
+            <img
+              src={project.logo}
+              alt={`${project.title} logo`}
+              class="max-h-22 max-w-full object-contain"
+              loading="lazy"
+            />
+          </div>
+        )}
+        {!project.logo && (
+          <div class="absolute -top-8 right-5 text-3xl leading-none">
+            🚀
+          </div>
+        )}
+
+        <div>
+          <h3 class="card-title leading-tight">{project.title}</h3>
+          <p class="text-xs uppercase tracking-wider text-base-content/50">{t(Astro.currentLocale!, 'open_source_project')}</p>
+        </div>
+
+        <p class="text-base-content/80 leading-relaxed min-h-17">{project.description}</p>
+
+        {project.href && (
+          <div class="card-actions justify-end">
+            <a
+              href={project.href}
+              class="btn btn-outline btn-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {project.label}
+            </a>
+          </div>
+        )}
+      </div>
+    </article>
+  ))}
+</div>

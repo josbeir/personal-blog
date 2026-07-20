@@ -1,0 +1,141 @@
+# Project: jaspersmet-astro
+
+Jasper Smet's personal site and blog — a multilingual static site built with Astro.
+
+## Tech Stack
+
+| Layer          | Technology                                                                 |
+| -------------- | -------------------------------------------------------------------------- |
+| Framework      | [Astro v5](https://astro.build) (SSG, `.astro` + `.mdx` pages)            |
+| Language       | TypeScript (strict mode), JavaScript for endpoints (`rss.xml.js`, `llms.txt.js`) |
+| Runtime        | Node.js 22                                                                |
+| Package mgr    | npm                                                                        |
+| Styling        | [Tailwind CSS v4](https://tailwindcss.com) + [daisyUI v5](https://daisyui.com) |
+| Typography     | `@tailwindcss/typography` plugin for `prose` classes                       |
+| Markdown       | MDX (`@astrojs/mdx`) with Shiki syntax highlighting                        |
+| Content        | Astro Content Collections (`src/content/config.ts`)                        |
+| i18n           | Astro built-in i18n routing + custom `src/i18n/` translation helpers       |
+| RSS            | `@astrojs/rss`                                                             |
+| Sitemap        | `@astrojs/sitemap`                                                         |
+| Comments       | [Giscus](https://giscus.app) (GitHub Discussions)                          |
+| Analytics      | Simple Analytics (scripts.simpleanalyticscdn.com)                          |
+| Fonts          | Lexend via bunny.net                                                       |
+| CI/CD          | GitHub Actions → GitHub Pages                                              |
+
+## Project Structure
+
+```
+.
+├── .github/workflows/deploy.yml   # CI: build + deploy to GitHub Pages
+├── astro.config.mjs               # Astro config (site, i18n, integrations, Vite plugins)
+├── tsconfig.json                  # Extends astro/tsconfigs/strict
+├── public/                        # Static assets served at /
+│   ├── avatar.webp
+│   ├── favicon.svg
+│   ├── glaze-logo.svg
+│   └── sugar-logo.svg
+└── src/
+    ├── components/                # Reusable Astro components
+    │   ├── ContactForm.astro
+    │   ├── Footer.astro
+    │   ├── GiscusComments.astro   # Giscus script loader
+    │   ├── Header.astro
+    │   ├── HeroAmbient.astro      # Decorative hero background (orbs + gradients)
+    │   ├── HighlightCards.astro
+    │   ├── PostTeaser.astro       # Blog post card (image, title, date, excerpt)
+    │   ├── ProjectCards.astro
+    │   ├── SEO.astro              # <head> meta tags, OG, Twitter cards
+    │   └── SocialLinks.astro
+    ├── content/
+    │   ├── config.ts              # Content collection schema (blog)
+    │   └── blog/                  # Blog posts as MDX with images
+    │       ├── 2026/...
+    │       ├── cakephp-doc-migration/
+    │       ├── cakephp-mercure/
+    │       └── sqlite-ft5-for-search-api/
+    ├── i18n/
+    │   ├── index.ts               # t() helper, getSiteData(), getProjects(), etc.
+    │   ├── en.ts                  # English translation keys
+    │   ├── nl.ts                  # Dutch translation keys
+    │   └── fr.ts                  # French translation keys
+    ├── layouts/
+    │   ├── BaseLayout.astro       # Root layout: <html>, SEO, Header, Footer, drawer nav, theme toggle
+    │   └── BlogPostLayout.astro   # Blog post layout: article + Giscus comments
+    ├── pages/
+    │   ├── index.astro            # English homepage (hero, highlights, projects, recent posts)
+    │   ├── contact.astro          # English contact page
+    │   ├── rss.xml.js             # RSS feed endpoint (GET)
+    │   ├── llms.txt.js            # LLM-friendly site index endpoint
+    │   ├── posts/
+    │   │   ├── index.astro        # Blog listing page (all posts, sorted by date)
+    │   │   └── [...slug].astro    # Dynamic blog post route
+    │   ├── fr/                    # French localized pages (index, contact, posts)
+    │   └── nl/                    # Dutch localized pages (index, contact, posts)
+    ├── styles/
+    │   └── global.css             # Tailwind imports + daisyUI themes (spring-fun, spring-night) + custom animations
+    └── utils/                     # (currently empty)
+```
+
+## i18n System
+
+- **Locales**: `en` (default, no prefix), `nl` (`/nl/`), `fr` (`/fr/`)
+- **Routing**: prefixDefaultLocale is `false`, so English URLs have no prefix
+- **Translation function**: `t(locale, key, params?)` — dot-notation key lookup, supports `{param}` interpolation
+- **Site data**: `getSiteData(locale)` returns nav, hero, and description per locale
+- **Page-specific data**: `getPostsPageData()`, `getContactPageData()`, `getHomepageHighlights()`, `getHomepageIntro()` all accept a locale
+- Translation key files are plain TypeScript objects (`as const`)
+
+## Content (Blog)
+
+- Defined in `src/content/config.ts` using `defineCollection` with Zod schema
+- **Schema fields**: `title` (string), `description` (string), `date` (Date), `tags` (string[], default []), `draft` (boolean, default false), `image` (optional image)
+- Posts are `.mdx` files in `src/content/blog/`, each in its own folder with associated images
+- Draft posts are filtered out on the homepage and blog listing
+- Posts are sorted by `date` descending
+
+## Styling Conventions
+
+- **Tailwind CSS v4** with `@import "tailwindcss"` (not `@tailwind` directives)
+- **daisyUI v5** imported as a Tailwind plugin; two custom themes defined inline:
+  - `spring-fun` (light, default)
+  - `spring-night` (dark)
+- Theme toggle via `<input data-theme-toggle>` checkbox and inline script in BaseLayout
+- Custom CSS layers in `global.css`: `@layer base` (selection colors), `@layer components` (highlight-card, hero-ambient classes, keyframe animations)
+- Default font: Lexend (variable weight 100–900)
+- DaisyUI component classes used throughout (btn, card, drawer, divider, menu, avatar, etc.)
+
+## Key Integration Details
+
+- **Giscus comments**: loaded on blog posts via `GiscusComments.astro`; repo `josbeir/personal-blog`, category "Announcements", uses `preferred_color_scheme`
+- **Theme persistence**: localStorage key `theme` (values: `light`/`dark`), falls back to `prefers-color-scheme` media query
+- **SEO**: `SEO.astro` generates `<title>`, meta description, canonical, OG, and Twitter card tags; falls back to avatar.webp as default OG image
+- **RSS**: served at `/rss.xml`, English-only, includes all blog posts
+- **llms.txt**: served at `/llms.txt`, lists all pages and blog post URLs for LLM consumption
+- **Simple Analytics**: loaded asynchronously in `<head>`, no custom configuration
+
+## Deployment
+
+- **Host**: GitHub Pages (`https://www.jaspersmet.be`)
+- **CI**: GitHub Actions workflow at `.github/workflows/deploy.yml`
+  - Trigger: push to `main`, or manual `workflow_dispatch`
+  - Node 22, `npm ci`, `npm run build`
+  - Artifact upload (`actions/upload-pages-artifact@v3`) from `dist/`
+  - Deploy via `actions/deploy-pages@v4`
+
+## Scripts
+
+| Command           | Description                |
+| ----------------- | -------------------------- |
+| `npm run dev`     | Start Astro dev server     |
+| `npm run start`   | Alias for `dev`            |
+| `npm run build`   | Production build to `dist/`|
+| `npm run preview` | Preview production build   |
+
+## Development Notes
+
+- The `dist/` and `.astro/` directories are gitignored
+- The `old/` directory is excluded from TypeScript compilation (likely contains legacy/migration artifacts)
+- The project is strictly typed (`strictNullChecks: true`, `allowJs: true`)
+- No testing framework, linter, or formatter is currently configured
+- Blog posts are the only content collection; there is no CMS — content is authored directly in MDX files
+- The `ContactForm.astro` component exists but there is no visible backend form handler; forms likely rely on an external service or are static placeholders

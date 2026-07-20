@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { getContactPageData, localePaths } from '../../i18n/index';
+
+export async function getStaticPaths() {
+  return localePaths();
+}
+
+const { locale } = Astro.params;
+const data = getContactPageData(locale);
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <header class="mb-10 text-center">
+    <h1 class="text-3xl lg:text-4xl mb-1 font-bold max-w-xl mx-auto">{data.title}</h1>
+  </header>
+
+  <article>
+    <div class="prose lg:prose-xl mx-auto mb-8">
+      <p>{data.intro}</p>
+    </div>
+    <ContactForm />
+  </article>
+</BaseLayout>

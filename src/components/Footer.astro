@@ -1,0 +1,11 @@
+---
+import { t } from '../i18n/index';
+
+
+---
+
+<footer class="footer footer-center p-6 border-t border-base-content/10 text-base-content/70">
+  <aside>
+    <p>{t(Astro.currentLocale!, 'copyright', { year: String(new Date().getFullYear()) })}</p>
+  </aside>
+</footer>

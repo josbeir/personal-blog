@@ -1,0 +1,79 @@
+---
+import { t, getSiteData } from '../i18n/index';
+
+const siteData = getSiteData(Astro.currentLocale!);
+const currentLang = Astro.currentLocale!.toUpperCase();
+const languages = [
+  { code: 'en', label: 'English' },
+  { code: 'nl', label: 'Nederlands' },
+  { code: 'fr', label: 'Francais' },
+];
+---
+
+<header class="border-b border-primary/15 bg-base-100/90 backdrop-blur supports-backdrop-filter:bg-base-100/70 sticky top-0 z-30">
+  <div class="navbar max-w-7xl mx-auto px-4 lg:px-8">
+    <div class="navbar-start">
+      <label for="mobile-nav-drawer" class="btn btn-ghost btn-square lg:hidden" aria-label={t(Astro.currentLocale!, 'open_menu')}>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-5 w-5 stroke-current">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </label>
+      <a href={`/${Astro.currentLocale}/`} class="btn btn-ghost text-xl px-2">
+        <span class="font-semibold">Jasper Smet</span>
+      </a>
+    </div>
+
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1">
+        {siteData.nav.map((item) => (
+          <li>
+            <a href={item.url}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="navbar-end">
+      <div class="dropdown dropdown-end mr-1">
+        <label tabindex="0" class="btn btn-ghost btn-sm font-bold" aria-label="Language">
+          {currentLang}
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-3 w-3 ml-0.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"></path>
+          </svg>
+        </label>
+        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 border border-base-content/10 rounded-box w-36 z-50 mt-2">
+          {languages.map((lang) => (
+            <li>
+              <a
+                href={`/${lang.code}/`}
+                class:list={{ 'font-bold': lang.code === Astro.currentLocale }}
+              >
+                {lang.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <label class="swap swap-rotate btn btn-ghost btn-circle mr-1" aria-label="Toggle theme">
+        <input type="checkbox" data-theme-toggle />
+        <svg class="swap-on h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8" />
+        </svg>
+        <svg class="swap-off h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2" />
+          <path d="M12 20v2" />
+          <path d="m4.93 4.93 1.41 1.41" />
+          <path d="m17.66 17.66 1.41 1.41" />
+          <path d="M2 12h2" />
+          <path d="M20 12h2" />
+          <path d="m6.34 17.66-1.41 1.41" />
+          <path d="m19.07 4.93-1.41 1.41" />
+        </svg>
+      </label>
+      <a href={`/${Astro.currentLocale}/contact/`} class="btn btn-primary btn-sm lg:btn-md">
+        {t(Astro.currentLocale!, 'get_in_touch')}
+      </a>
+    </div>
+  </div>
+</header>

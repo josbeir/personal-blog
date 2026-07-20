@@ -1,0 +1,77 @@
+---
+import '../styles/global.css';
+import SEO from '../components/SEO.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getSiteData } from '../i18n/index';
+
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+const locale = Astro.currentLocale!;
+const siteData = getSiteData(locale);
+---
+
+<!doctype html>
+<html lang={locale} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.bunny.net" />
+    <link
+      href="https://fonts.bunny.net/css2?family=Lexend:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+  </head>
+  <body class="min-h-screen bg-base-100 text-base-content">
+    <div class="drawer lg:drawer-open">
+      <input id="mobile-nav-drawer" type="checkbox" class="drawer-toggle" />
+
+      <div class="drawer-content flex flex-col min-h-screen">
+        <Header />
+
+        <main class="max-w-7xl mx-auto p-6 lg:p-10 w-full">
+          <slot />
+        </main>
+
+        <Footer />
+      </div>
+
+      <div class="drawer-side lg:hidden z-40">
+        <label for="mobile-nav-drawer" class="drawer-overlay"></label>
+        <ul class="menu p-4 w-72 min-h-full bg-base-100 text-base-content border-r border-base-content/10">
+          {siteData.nav.map((item) => <li><a href={item.url}>{item.label}</a></li>)}
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      const t = 'data-theme';
+      const s = 'theme';
+      const m = { light: 'spring-fun', dark: 'spring-night' };
+      const q = window.matchMedia('(prefers-color-scheme: dark)');
+      const r = () => { const v = localStorage.getItem(s); return v === 'light' || v === 'dark' ? v : q.matches ? 'dark' : 'light'; };
+      const a = (d) => { document.documentElement.setAttribute(t, m[d]); const e = document.querySelector('[data-theme-toggle]'); if (e instanceof HTMLInputElement) e.checked = d === 'dark'; };
+      try { document.documentElement.setAttribute(t, m[r()]); } catch (_) {}
+      function i() {
+        a(r());
+        const e = document.querySelector('[data-theme-toggle]');
+        if (e instanceof HTMLInputElement) e.addEventListener('change', () => { const d = e.checked ? 'dark' : 'light'; localStorage.setItem(s, d); a(d); });
+        q.addEventListener('change', () => { if (localStorage.getItem(s) === null) a(r()); });
+      }
+      document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', i) : i();
+    </script>
+  </body>
+</html>

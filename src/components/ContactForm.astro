@@ -1,0 +1,36 @@
+---
+import { t } from '../i18n/index';
+---
+
+<form action="https://formspree.io/f/mkndvanz" method="POST" class="block mx-auto bg-base-200 p-8 rounded-xl xl:max-w-2/3">
+  <input type="text" name="_gotcha" style="display:none" />
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">{t(Astro.currentLocale!, 'form.email_label')}</legend>
+    <input type="email" name="email" class="input input-lg w-full validator" placeholder={t(Astro.currentLocale!, 'form.email_placeholder')} required />
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">{t(Astro.currentLocale!, 'form.name_label')}</legend>
+    <input type="text" name="name" class="input input-lg w-full validator" placeholder={t(Astro.currentLocale!, 'form.name_placeholder')} required />
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">{t(Astro.currentLocale!, 'form.company_label')}</legend>
+    <input type="text" name="company" class="input input-lg w-full validator" placeholder={t(Astro.currentLocale!, 'form.company_placeholder')} required />
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">{t(Astro.currentLocale!, 'form.phone_label')}</legend>
+    <input type="text" name="phone" class="input input-lg w-full validator" placeholder={t(Astro.currentLocale!, 'form.phone_placeholder')} required />
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">{t(Astro.currentLocale!, 'form.message_label')}</legend>
+    <textarea name="message" placeholder={t(Astro.currentLocale!, 'form.message_placeholder')} class="textarea textarea-lg w-full validator" rows="5" required></textarea>
+  </fieldset>
+
+  <div class="mt-4">
+    <button type="submit" class="btn btn-primary">{t(Astro.currentLocale!, 'form.submit')}</button>
+  </div>
+</form>
