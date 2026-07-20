@@ -1,0 +1,123 @@
+---
+title: "Harv — My first Rust TUI, built with vibes and AI"
+description: "How I went from zero Rust experience to shipping a production-grade terminal app for Harvest time tracking in two weeks, using AI agents as my pair programmer."
+date: 2026-07-20
+tags:
+  - rust
+  - tui
+  - open-source
+  - ai
+  - ratatui
+  - productivity
+image: ./harv-hero.png
+---
+
+Rust has been on my radar for years. I've read the blog posts, admired the ecosystem from a safe distance, and bookmarked more "Learning Rust" resources than I'd care to admit. But I never had a project that demanded it — until now.
+
+Enter [**Harv**](https://github.com/josbeir/harv): a command-line time-tracking client for [Harvest](https://www.getharvest.com/). Full-screen terminal UI, keyboard-driven, with timers, fuzzy search, project configs, and six-language internationalization. Built in two weeks. By someone who'd never written a line of Rust before.
+
+And yes — I vibe-coded the whole thing.
+
+## The itch I had to scratch
+
+I use Harvest every day for freelance time tracking. It's a solid product, but the browser-based workflow breaks my rhythm. I live in the terminal — my editor, my git, my build pipeline, my deploy scripts. Switching to a browser tab to start a timer feels like leaving the cockpit to check the fuel gauge.
+
+I wanted something that felt native to the terminal. Keyboard shortcuts. Instant startup. No loading spinners (ironic, I know). Just `harv start dev` and I'm tracking.
+
+The landscape of Rust TUI frameworks has matured beautifully. [Ratatui](https://ratatui.rs/) v0.30 offers a rich widget library, layout system, and event handling that rivals many GUI frameworks. Combined with [clap](https://docs.rs/clap) for CLI argument parsing and [reqwest](https://docs.rs/reqwest) for the Harvest API, the pieces were all there.
+
+## Why Rust, why now
+
+I've spent the last decade in PHP and TypeScript. They're fantastic languages that pay my bills and power most of my open-source work. But Rust offers something different: zero-cost abstractions, fearless concurrency, and a type system that catches entire categories of bugs at compile time.
+
+The challenge was always the learning curve. Rust's ownership model, lifetimes, and borrow checker have a reputation for being unforgiving. Every Rust developer I know says the same thing: "The first few weeks are painful, then it clicks."
+
+**My bet was that AI agents could flatten that curve.** Instead of spending weeks fighting the borrow checker alone, I'd pair-program with an AI that understands Rust deeply — letting me focus on _what_ I wanted to build while it helped me figure out _how_ to build it.
+
+## The vibe-coding setup
+
+I structured the project around **39 curated AI agent skills** covering everything from Rust fundamentals to domain-specific patterns. These skills function like a team of expert consultants: one knows the ownership model cold, another specializes in error handling, a third handles async patterns.
+
+The centerpiece is `AGENTS.md` — a 5,700-byte document that serves as the project's constitution for every AI working on the codebase:
+
+- **Quality gates**: `cargo fmt` → `cargo clippy -D warnings` → `cargo test` — in that exact order
+- **Architecture rules**: harv-core depends on nothing, harv-sdk handles HTTP, harv-tui renders the UI — no exceptions
+- **Gotchas catalog**: flaky locale tests need `#[serial]`, env-var tests need `ENV_MUTEX`, MessagePack cache corruption detection, pagination ordering guarantees
+
+The workflow became: **I describe the feature, the AI generates the implementation, Copilot reviews it, I address the feedback, repeat.** Nearly every commit message in the repo has an "Address Copilot review" section — sometimes two or three rounds per PR.
+
+This feedback loop is remarkably effective. The AI catches ownership issues I'd miss, suggests more idiomatic patterns, and writes tests I wouldn't have thought of. I catch architectural decisions, UX concerns, and domain logic that only a human user would know.
+
+## What 521 tests taught me about Rust
+
+Here's a stat I'm genuinely proud of: **70.8% of Harv's 17,473 lines of Rust are test code.** 521 passing tests, zero clippy warnings.
+
+This level of test coverage isn't just discipline — it's enabled by Rust's testing culture. `#[test]` annotations, first-class benchmark support, and `cargo test --workspace` as a single command make testing feel natural rather than burdensome.
+
+Some things I learned through bruises:
+
+**The `#[serial]` test saga.** Locale tests use a `Mutex`-protected global — run them in parallel and they overwrite each other's state mid-assertion, producing baffling failures. The fix: `serial_test` crate plus a defensive `unwrap_or_else(|e| e.into_inner())` to recover from poisoned mutex guards. The kind of bug you only encounter in real concurrent code.
+
+**ICU4X compiled_data doesn't propagate in CI.** We replaced a hand-written date formatting table (300 lines of weekday/month names in 6 languages) with ICU4X's `DateTimeFormatter`. Worked locally. CI showed all English names. Root cause: `compiled_data` feature flag must be enabled on the `icu` meta-crate, not just `icu_datetime`. Plus ICU4X needs region-qualified BCP-47 identifiers — `nl` silently falls back to English month names; `nl-NL` resolves them correctly.
+
+**UTF-8 safety isn't academic.** Custom text input fields used raw byte arithmetic for cursor movement. `cursor_pos += 1` on a right-arrow press. Works fine with ASCII, panics on any multi-byte character. The fix used `prev_char_boundary()`, `next_char_boundary()`, and `unicode-width` — and later replaced the entire custom system with `ratatui-textarea`, deleting 110 lines of manual code.
+
+**CI caches can overflow your disk.** The cached `target/` directory hit 6.6GB and overflowed the GitHub Actions runner. Fixed by caching only the Cargo registry and git checkouts.
+
+## The architecture that emerged
+
+Harv is a 4-crate workspace with a strict dependency chain:
+
+```
+harv-core  (domain types, errors, i18n) — no workspace deps
+  └── harv-sdk  (Harvest API v2, auth, cache, pagination)
+        ├── harv-tui  (terminal UI library)
+        └── harv-cli  (binary, re-exports harv-tui)
+```
+
+This isn't a pattern I invented — it's a pattern Rust naturally guides you toward. The type system and module visibility rules make circular dependencies impossible to accidentally introduce. Each crate has a clear purpose, and the dependency direction is always inward.
+
+Some technical highlights:
+
+- **ratatui 0.30** with custom border collapsing (`Spacing::Overlap` + `merge_borders`), a visual date picker widget, shimmer loading animation on the ASCII logo, and real-time OS theme detection
+- **MessagePack binary cache** replacing JSON — 10x smaller, 10x faster deserialization
+- **Concurrent pagination** via `JoinSet` with `MAX_CONCURRENT_PAGES = 3`, results collected in `BTreeMap` for deterministic ordering
+- **Custom Fluent parser** — deliberately avoided `fluent-rs` ecosystem, wrote a lightweight `.ftl` parser handling 230 keys across 6 languages
+- **Mock mode** (`HARV_MOCK=1`) that runs against a local `wiremock` server with Roman-themed test data — full TUI and CLI testing without a Harvest account
+- **GitHub Releases pipeline** compiling for 5 platforms (Linux x86_64/ARM64, macOS x86_64/ARM64, Windows x86_64) on every `v*` tag
+
+## The real win: I understand Rust now
+
+This is the part that matters most to me. Before Harv, Rust was a language I'd read about. Now I've:
+
+- Fought the borrow checker and learned to work _with_ it instead of against it
+- Used `Mutex`, `RwLock`, `Arc`, and `JoinSet` in real async code
+- Written a custom parser and understood why Rust's pattern matching makes this pleasant
+- Debugged CI failures that only manifest in release mode with LTO enabled
+- Learned that `#[derive]` macros aren't magic — they're code generation you can inspect with `cargo expand`
+- Discovered that Rust's documentation culture (`cargo doc --open`) is genuinely exceptional
+
+The AI didn't replace learning — it accelerated it. Every compilation error, every clippy warning, every Copilot review comment was a teachable moment. The AI suggested patterns; I internalized them.
+
+## Try it yourself
+
+```bash
+# Install
+cargo install --git https://github.com/josbeir/harv harv-cli
+
+# Or download a binary from GitHub Releases
+# https://github.com/josbeir/harv/releases
+
+# Connect your Harvest account
+harv connect
+
+# Start tracking
+harv start dev
+
+# Open the TUI
+harv
+```
+
+The project is MIT-licensed and actively developed. If you're a terminal-native developer using Harvest, or just curious about Rust TUI development, check out the [repository](https://github.com/josbeir/harv).
+
+And if you've been putting off learning Rust because the curve looks steep — try vibe-coding your way through it. You might surprise yourself.
