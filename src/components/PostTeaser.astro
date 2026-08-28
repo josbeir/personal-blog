@@ -1,6 +1,8 @@
 ---
 import { t } from '../i18n/index';
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { ArrowUpRight } from '@lucide/astro';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -15,30 +17,31 @@ const locale = Astro.currentLocale ?? 'en';
 const postsPrefix = locale === 'en' ? '/posts/' : `/${locale}/posts/`;
 ---
 
-<article class="card bg-base-300 border border-base-content/10 hover:border-primary/35 transition-all overflow-hidden h-full">
+<article class="group flex h-full flex-col overflow-hidden rounded-2xl bg-base-100 ring-1 ring-base-content/10 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-base-content/10 hover:ring-primary/30">
   {teaserImg && (
-    <a href={`${postsPrefix}${post.slug}/`} class="block">
-      <img
+    <a href={`${postsPrefix}${post.id}/`} class="block overflow-hidden">
+      <Image
         loading="lazy"
-        class="w-full aspect-video object-cover"
-        src={teaserImg.src}
-        alt={`${data.title} Teaser Image`}
+        class="aspect-video w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+        src={teaserImg}
+        alt={data.title}
       />
     </a>
   )}
-  <div class="card-body">
-    <div class="content flex-1">
-      <h3 class="text-2xl leading-tight mb-2">
-        <a class="hover:text-primary transition-colors" href={`${postsPrefix}${post.slug}/`}>{data.title}</a>
-      </h3>
-      <p class="text-sm text-base-content/60 mb-3">
+  <div class="flex flex-1 flex-col p-6 md:p-7">
+    <div class="flex-1">
+      <p class="mb-3 text-sm text-base-content/55">
         {date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
       </p>
-      <p class="text-base-content/80">{desc}</p>
+      <h3 class="mb-3 text-xl font-semibold leading-[1.15] tracking-tight md:text-2xl">
+        <a class="transition-colors hover:text-primary" href={`${postsPrefix}${post.id}/`}>{data.title}</a>
+      </h3>
+      <p class="leading-relaxed text-base-content/72">{desc}</p>
     </div>
-    <div class="card-actions mt-4 justify-end">
-      <a class="btn btn-outline btn-primary btn-md" href={`${postsPrefix}${post.slug}/`}>
+    <div class="mt-7">
+      <a class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-content" href={`${postsPrefix}${post.id}/`}>
         {t(locale, 'read_more')}
+        <ArrowUpRight class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} aria-hidden="true" />
       </a>
     </div>
   </div>

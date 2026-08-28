@@ -6,9 +6,16 @@ export const nl = {
   more_below: 'Meer hieronder',
   copyright: 'Copyright \u00a9 {year} - Alle rechten voorbehouden',
   open_menu: 'Menu openen',
+  toggle_theme: 'Thema wisselen',
 
   recent_posts_title: 'Recente berichten',
-  projects_title: 'Uitgelichte projecten',
+  projects_title: 'Enkele van mijn open-sourceprojecten',
+  github_projects_intro: '{count} openbare projecten, vernieuwd vanuit GitHub bij elke build.',
+  github_projects_profile: 'Bekijk GitHub-profiel',
+  github_projects_no_description: 'Geen beschrijving beschikbaar.',
+  github_projects_unavailable: 'De projectcatalogus is tijdelijk niet beschikbaar. Bekijk de repositories op GitHub.',
+  github_projects_cakephp: 'CakePHP',
+  github_projects_other: 'Andere projecten',
 
   posted_on: '{date}',
   read_more: 'Bekijk bericht',
@@ -36,6 +43,11 @@ export const nl = {
       title: 'CakePHP-expertise op kernniveau',
       description:
         'Als core CakePHP-ontwikkelaar breng ik framework-niveau inzicht mee op het vlak van architectuur, prestaties en best practices.',
+    },
+    frontend: {
+      title: 'Front-end engineering',
+      description:
+        'Ik bouw responsieve, toegankelijke interfaces met moderne front-endtechnologie, zodat complexe producten helder en doordacht aanvoelen.',
     },
     opensource: {
       title: 'Open source mindset',
@@ -77,10 +89,12 @@ export const nl = {
 
   posts_page: {
     title: 'Berichten',
+    eyebrow: 'Notities over code, tooling en het web',
+    count: '{count} berichten',
     description:
       'Ontdek inzichten over technologie, creativiteit en idee\u00ebn. Verken artikelen over innovatie, probleemoplossing en de menselijke kant van de digitale wereld.',
     intro:
-      'Welkom op mijn blog! Hier vind je een collectie gedachten, inzichten en verkenningen over technologie, creativiteit en de wisselwerking van idee\u00ebn. Of je nu ge\u00efnteresseerd bent in technische discussies, filosofische bespiegelingen, projectoverzichten of observaties over hoe we omgaan met de digitale wereld \u2014 er is hier altijd iets dat jouw nieuwsgierigheid prikkelt.\n\nBlader door de berichten hieronder en ontdek artikelen over uiteenlopende onderwerpen \u2014 van innovatie en probleemoplossing tot de menselijke kant van technologie en het veranderende landschap van onze verbonden wereld.',
+      'Praktische notities uit open-sourcewerk, webplatformen en de tools die ik onderweg bouw.\n\nVerwacht CakePHP, Drupal, PHP, front-endarchitectuur en af en toe een experiment.',
   },
 
   contact_page: {

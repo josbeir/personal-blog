@@ -18,7 +18,7 @@ export async function GET() {
   posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   const postUrls = posts.map((post) => ({
-    url: `/posts/${post.slug}/`,
+    url: `/posts/${post.id}/`,
     title: post.data.title,
     description: post.data.description,
   }));

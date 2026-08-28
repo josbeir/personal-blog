@@ -6,9 +6,16 @@ export const fr = {
   more_below: 'Plus bas',
   copyright: 'Copyright \u00a9 {year} - Tous droits r\u00e9serv\u00e9s',
   open_menu: 'Ouvrir le menu',
+  toggle_theme: 'Changer de th\u00e8me',
 
   recent_posts_title: 'Articles r\u00e9cents',
-  projects_title: 'Projets en vedette',
+  projects_title: 'Quelques-uns de mes projets open source',
+  github_projects_intro: '{count} projets publics, mis à jour depuis GitHub à chaque build.',
+  github_projects_profile: 'Voir le profil GitHub',
+  github_projects_no_description: 'Aucune description disponible.',
+  github_projects_unavailable: 'Le catalogue de projets est temporairement indisponible. Consultez les dépôts sur GitHub.',
+  github_projects_cakephp: 'CakePHP',
+  github_projects_other: 'Autres projets',
 
   posted_on: '{date}',
   read_more: "Voir l'article",
@@ -36,6 +43,11 @@ export const fr = {
       title: 'Expertise CakePHP au niveau core',
       description:
         "En tant que d\u00e9veloppeur CakePHP core, j'apporte une vision du framework sur l'architecture, les performances et les bonnes pratiques.",
+    },
+    frontend: {
+      title: 'Ing\u00e9nierie front-end',
+      description:
+        'Je cr\u00e9e des interfaces r\u00e9actives et accessibles avec des technologies front-end modernes, pour rendre les produits complexes clairs et soign\u00e9s.',
     },
     opensource: {
       title: 'Culture open source',
@@ -77,10 +89,12 @@ export const fr = {
 
   posts_page: {
     title: 'Articles',
+    eyebrow: 'Notes sur le code, les outils et le web',
+    count: '{count} articles',
     description:
       "D\u00e9couvrez des insights sur la technologie, la cr\u00e9ativit\u00e9 et les id\u00e9es. Explorez des articles sur l'innovation, la r\u00e9solution de probl\u00e8mes et le c\u00f4t\u00e9 humain du monde num\u00e9rique.",
     intro:
-      "Bienvenue sur mon blog ! Vous y trouverez une collection de r\u00e9flexions, d'insights et d'explorations couvrant la technologie, la cr\u00e9ativit\u00e9 et l'intersection des id\u00e9es. Que vous soyez int\u00e9ress\u00e9 par des discussions techniques, des r\u00e9flexions philosophiques, des pr\u00e9sentations de projets ou des observations sur notre rapport au monde num\u00e9rique \u2014 il y a ici de quoi piquer votre curiosit\u00e9.\n\nParcourez les articles ci-dessous pour d\u00e9couvrir des th\u00e8mes vari\u00e9s \u2014 de l'innovation et de la r\u00e9solution de probl\u00e8mes au c\u00f4t\u00e9 humain de la technologie et au paysage en \u00e9volution de notre monde connect\u00e9.",
+      "Notes pratiques issues de l'open source, des plateformes web et des outils que je construis au fil du temps.\n\nAu programme : CakePHP, Drupal, PHP, architecture front-end et quelques exp\u00e9riences.",
   },
 
   contact_page: {

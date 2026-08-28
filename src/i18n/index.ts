@@ -52,14 +52,19 @@ export function getHomepageHighlights(locale: string) {
       description: t(locale, 'highlights.cakephp.description'),
     },
     {
-      icon: 'opensource',
-      title: t(locale, 'highlights.opensource.title'),
-      description: t(locale, 'highlights.opensource.description'),
+      icon: 'frontend',
+      title: t(locale, 'highlights.frontend.title'),
+      description: t(locale, 'highlights.frontend.description'),
     },
     {
       icon: 'drupal',
       title: t(locale, 'highlights.drupal.title'),
       description: t(locale, 'highlights.drupal.description'),
+    },
+    {
+      icon: 'opensource',
+      title: t(locale, 'highlights.opensource.title'),
+      description: t(locale, 'highlights.opensource.description'),
     },
   ];
 }
@@ -102,7 +107,9 @@ export function getPostsPageData(locale: string) {
   return {
     title: t(locale, 'posts_page.title'),
     description: t(locale, 'posts_page.description'),
+    eyebrow: t(locale, 'posts_page.eyebrow'),
     intro: t(locale, 'posts_page.intro'),
+    count: t(locale, 'posts_page.count'),
   };
 }
 
@@ -120,13 +127,13 @@ export function localePaths() {
 }
 
 /** GetStaticPaths entries for content pages that vary by locale and slug. */
-export async function localeContentPaths<T extends { slug: string }>(
+export async function localeContentPaths<T extends { id: string }>(
   getEntries: () => Promise<T[]>,
 ) {
   const entries = await getEntries();
   return locales.flatMap((locale) =>
     entries.map((entry) => ({
-      params: { locale, slug: entry.slug },
+      params: { locale, slug: entry.id },
       props: { entry },
     })),
   );

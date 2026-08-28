@@ -3,10 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroAmbient from '../../components/HeroAmbient.astro';
 import SocialLinks from '../../components/SocialLinks.astro';
 import HighlightCards from '../../components/HighlightCards.astro';
-import ProjectCards from '../../components/ProjectCards.astro';
+import GitHubProjects from '../../components/GitHubProjects.astro';
 import PostTeaser from '../../components/PostTeaser.astro';
-import { t, getSiteData, getHomepageHighlights, getFeaturedProjects, getHomepageIntro } from '../../i18n/index';
+import { t, getSiteData, getHomepageHighlights, getHomepageIntro } from '../../i18n/index';
 import { getCollection } from 'astro:content';
+import { ArrowDown, ArrowUpRight } from '@lucide/astro';
+import { getGitHubProjects, githubProfileUrl } from '../../lib/github-projects';
 
 export async function getStaticPaths() {
   return [
@@ -17,9 +19,10 @@ export async function getStaticPaths() {
 
 const { locale } = Astro.params;
 const postsPrefix = `/${locale}/posts/`;
+const contactUrl = `/${locale}/contact/`;
 const siteData = getSiteData(locale);
 const highlights = getHomepageHighlights(locale);
-const projects = await getFeaturedProjects(locale);
+const projects = await getGitHubProjects();
 const intro = getHomepageIntro(locale);
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -34,10 +37,16 @@ const recentPosts = posts.slice(0, 3);
         <div class="lg:col-span-12 p-2">
           <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-8">
             <div class="max-w-4xl order-2 lg:order-1 relative z-50">
-              <p class="text-xs uppercase tracking-[0.2em] text-primary mb-3">{t(locale, 'who_i_am')}</p>
-              <h1 class="text-5xl md:text-6xl xl:text-7xl font-black uppercase leading-[0.9] tracking-tight mb-6">Jasper Smet</h1>
-              <p class="text-xl text-base-content/85 mb-6">{siteData.hero.description}</p>
-              <SocialLinks />
+              <p class="text-xs uppercase tracking-[0.2em] text-primary mb-3">{siteData.hero.subtitle}</p>
+              <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold uppercase leading-[0.9] tracking-tight mb-6">Jasper Smet</h1>
+              <p class="text-xl text-base-content/85 mb-7">{siteData.hero.description}</p>
+              <div class="flex flex-wrap items-center gap-3">
+                <a href={contactUrl} class="btn btn-primary gap-2">
+                  {t(locale, 'get_in_touch')}
+                  <ArrowUpRight class="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+                </a>
+                <SocialLinks />
+              </div>
             </div>
 
             {siteData.hero.avatar && (
@@ -60,16 +69,9 @@ const recentPosts = posts.slice(0, 3);
 
       <div class="hidden lg:flex absolute left-1/2 -translate-x-1/2 bottom-8 items-center gap-2 text-xs uppercase tracking-[0.18em] text-base-content/60" aria-hidden="true">
         <span>{t(locale, 'more_below')}</span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 animate-bounce" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M6 9l6 6 6-6"></path>
-        </svg>
+        <ArrowDown class="h-4 w-4 animate-bounce" strokeWidth={1.8} aria-hidden="true" />
       </div>
     </div>
-  </section>
-
-  <section class="mb-10">
-    <h2 class="text-3xl mb-6">{t(locale, 'projects_title')}</h2>
-    <ProjectCards projects={projects} />
   </section>
 
   <h2 id="recent-posts" class="mb-8 text-3xl">{t(locale, 'recent_posts_title')}</h2>
@@ -80,4 +82,11 @@ const recentPosts = posts.slice(0, 3);
   <div class="flex justify-center mb-16">
     <a href={postsPrefix} class="btn btn-primary btn-outline">{t(locale, 'all_posts')}</a>
   </div>
+
+  <section id="projects" class="relative left-1/2 mb-[-1.5rem] w-screen -translate-x-1/2 scroll-mt-24 bg-base-200 py-16 lg:mb-[-2.5rem]">
+    <div class="mx-auto max-w-7xl px-6 lg:px-10">
+      <h2 class="mb-6 text-3xl">{t(locale, 'projects_title')}</h2>
+      <GitHubProjects projects={projects} profileUrl={githubProfileUrl} />
+    </div>
+  </section>
 </BaseLayout>

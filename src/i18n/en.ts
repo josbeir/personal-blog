@@ -6,9 +6,16 @@ export const en = {
   more_below: 'More below',
   copyright: 'Copyright \u00a9 {year} - All rights reserved',
   open_menu: 'Open menu',
+  toggle_theme: 'Toggle theme',
 
   recent_posts_title: 'Recent posts',
-  projects_title: 'Featured projects',
+  projects_title: 'Some of my open-source projects',
+  github_projects_intro: '{count} public projects, refreshed from GitHub at build time.',
+  github_projects_profile: 'View GitHub profile',
+  github_projects_no_description: 'No description provided.',
+  github_projects_unavailable: 'The project catalogue is temporarily unavailable. Visit GitHub to browse the repositories.',
+  github_projects_cakephp: 'CakePHP',
+  github_projects_other: 'Other projects',
 
   posted_on: '{date}',
   read_more: 'View post',
@@ -36,6 +43,11 @@ export const en = {
       title: 'Core CakePHP expertise',
       description:
         'As a core CakePHP developer, I bring framework-level insight to architecture, performance, and best practices.',
+    },
+    frontend: {
+      title: 'Front-end engineering',
+      description:
+        'I build responsive, accessible interfaces using modern front-end technology, making complex products feel clear and considered.',
     },
     opensource: {
       title: 'Open source mindset',
@@ -77,10 +89,12 @@ export const en = {
 
   posts_page: {
     title: 'Posts',
+    eyebrow: 'Notes on code, tools and the web',
+    count: '{count} posts',
     description:
       'Discover insights on technology, creativity, and ideas. Explore articles on innovation, problem-solving, and the human side of the digital world.',
     intro:
-      "Welcome to my blog! Here you'll find a collection of thoughts, insights, and explorations spanning technology, creativity, and the intersection of ideas. Whether you're interested in technical discussions, philosophical musings, project showcases, or observations about how we interact with the digital world, there's something here to spark your curiosity.\n\nBrowse through the posts below to discover articles on diverse topics\u2014from innovation and problem-solving to the human side of technology and the evolving landscape of our connected world.",
+      'Practical notes from open-source work, web platforms, and the tools I build along the way.\n\nExpect CakePHP, Drupal, PHP, front-end architecture, and the occasional experiment.',
   },
 
   contact_page: {

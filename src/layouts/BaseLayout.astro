@@ -21,6 +21,22 @@ const siteData = getSiteData(locale);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      (() => {
+        const themes = { light: 'spring-fun', dark: 'spring-night' };
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let mode = prefersDark ? 'dark' : 'light';
+
+        try {
+          const saved = localStorage.getItem('theme');
+          if (saved === 'light' || saved === 'dark') mode = saved;
+        } catch (_) {}
+
+        document.documentElement.setAttribute('data-theme', themes[mode]);
+        document.documentElement.style.colorScheme = mode;
+      })();
+    </script>
     <SEO
       title={title}
       description={description}
@@ -30,7 +46,7 @@ const siteData = getSiteData(locale);
     <link rel="shortcut icon" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link
-      href="https://fonts.bunny.net/css2?family=Lexend:wght@100..900&display=swap"
+      href="https://fonts.bunny.net/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
       rel="stylesheet"
     />
     <script is:inline async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
@@ -63,12 +79,21 @@ const siteData = getSiteData(locale);
       const m = { light: 'spring-fun', dark: 'spring-night' };
       const q = window.matchMedia('(prefers-color-scheme: dark)');
       const r = () => { const v = localStorage.getItem(s); return v === 'light' || v === 'dark' ? v : q.matches ? 'dark' : 'light'; };
-      const a = (d) => { document.documentElement.setAttribute(t, m[d]); const e = document.querySelector('[data-theme-toggle]'); if (e instanceof HTMLInputElement) e.checked = d === 'dark'; };
-      try { document.documentElement.setAttribute(t, m[r()]); } catch (_) {}
+      const a = (d) => {
+        document.documentElement.setAttribute(t, m[d]);
+        document.documentElement.style.colorScheme = d;
+
+        const e = document.querySelector('[data-theme-toggle]');
+        if (e instanceof HTMLButtonElement) {
+          e.setAttribute('aria-pressed', String(d === 'dark'));
+          e.querySelector('[data-theme-icon="dark"]')?.classList.toggle('hidden', d !== 'dark');
+          e.querySelector('[data-theme-icon="light"]')?.classList.toggle('hidden', d === 'dark');
+        }
+      };
       function i() {
         a(r());
         const e = document.querySelector('[data-theme-toggle]');
-        if (e instanceof HTMLInputElement) e.addEventListener('change', () => { const d = e.checked ? 'dark' : 'light'; localStorage.setItem(s, d); a(d); });
+        if (e instanceof HTMLButtonElement) e.addEventListener('click', () => { const d = r() === 'dark' ? 'light' : 'dark'; localStorage.setItem(s, d); a(d); });
         q.addEventListener('change', () => { if (localStorage.getItem(s) === null) a(r()); });
         document.querySelectorAll('a[href^="http"]').forEach((l) => { if (!l.target) { l.target = '_blank'; l.rel = 'noopener noreferrer'; } });
       }

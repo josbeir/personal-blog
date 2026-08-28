@@ -84,18 +84,18 @@
 }
 
 @theme {
-  --default-font-family: "Lexend", sans-serif;
-  --default-font-variation-settings: "wdth" 100, "YTLC" 500;
+  --default-font-family: "Instrument Sans", sans-serif;
 }
 
 @layer base {
+  html {
+    @apply bg-base-100 text-base-content;
+  }
+
   ::selection {
     @apply bg-primary/30 text-primary-content;
   }
 
-  [data-theme="spring-night"] .feature-card-icon {
-    filter: invert(1);
-  }
 }
 
 @layer components {
