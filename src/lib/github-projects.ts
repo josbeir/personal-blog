@@ -21,6 +21,8 @@ interface GitHubRepositoryResponse {
 }
 
 const username = 'josbeir';
+const githubToken = import.meta.env.GITHUB_TOKEN;
+let projectsPromise: Promise<GitHubProject[]> | undefined;
 // Add any repository name here to hide it from the site. Forks and archived
 // repositories are always excluded, whether or not they are listed here.
 const ignoredRepositories = new Set([
@@ -38,15 +40,25 @@ function sortByName(projects: GitHubProject[]) {
   return projects.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export async function getGitHubProjects(): Promise<GitHubProject[]> {
+async function fetchGitHubProjects(): Promise<GitHubProject[]> {
   try {
     const response = await fetch(
       `https://api.github.com/users/${username}/repos?per_page=100&type=owner&sort=updated`,
-      { headers: { Accept: 'application/vnd.github+json' } },
+      {
+        headers: {
+          Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+          ...(githubToken ? { Authorization: `Bearer ${githubToken}` } : {}),
+        },
+      },
     );
 
     if (!response.ok) {
-      throw new Error(`GitHub returned ${response.status}`);
+      const remaining = response.headers.get('x-ratelimit-remaining');
+      const reset = response.headers.get('x-ratelimit-reset');
+      const resetAt = reset ? new Date(Number(reset) * 1000).toLocaleTimeString() : undefined;
+      const rateLimitHint = remaining === '0' ? ` (rate limit resets at ${resetAt})` : '';
+      throw new Error(`GitHub returned ${response.status}${rateLimitHint}`);
     }
 
     const repositories = (await response.json()) as GitHubRepositoryResponse[];
@@ -68,6 +80,13 @@ export async function getGitHubProjects(): Promise<GitHubProject[]> {
     console.warn('Unable to refresh GitHub projects.', error);
     return [];
   }
+}
+
+export function getGitHubProjects(): Promise<GitHubProject[]> {
+  // The home page is built once per locale. Reuse the same request so a build
+  // makes one API call rather than three.
+  projectsPromise ??= fetchGitHubProjects();
+  return projectsPromise;
 }
 
 export const githubProfileUrl = `https://github.com/${username}`;

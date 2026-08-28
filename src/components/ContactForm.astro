@@ -3,35 +3,110 @@ import { t } from '../i18n/index';
 const locale = Astro.currentLocale ?? 'en';
 ---
 
-<form action="https://formspree.io/f/mkndvanz" method="POST" class="block mx-auto bg-base-200 p-8 rounded-xl xl:max-w-2/3">
-  <input type="text" name="_gotcha" style="display:none" />
+<div class="rounded-box border border-base-content/10 bg-base-300 p-6 shadow-sm sm:p-8">
+  <form
+    action="https://formspree.io/f/mkndvanz"
+    method="POST"
+    data-contact-form
+    data-sending={t(locale, 'form.sending')}
+    data-submit={t(locale, 'form.submit')}
+    data-error={t(locale, 'form.error')}
+  >
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" />
 
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend">{t(locale, 'form.email_label')}</legend>
-    <input type="email" name="email" class="input input-lg w-full validator" placeholder={t(locale, 'form.email_placeholder')} required />
-  </fieldset>
+    <div class="grid gap-x-5 md:grid-cols-2">
+      <fieldset class="fieldset">
+        <label class="fieldset-legend" for="contact-email">{t(locale, 'form.email_label')}</label>
+        <input id="contact-email" type="email" name="email" class="input input-lg w-full validator" placeholder={t(locale, 'form.email_placeholder')} autocomplete="email" required />
+      </fieldset>
 
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend">{t(locale, 'form.name_label')}</legend>
-    <input type="text" name="name" class="input input-lg w-full validator" placeholder={t(locale, 'form.name_placeholder')} required />
-  </fieldset>
+      <fieldset class="fieldset">
+        <label class="fieldset-legend" for="contact-name">{t(locale, 'form.name_label')}</label>
+        <input id="contact-name" type="text" name="name" class="input input-lg w-full validator" placeholder={t(locale, 'form.name_placeholder')} autocomplete="name" required />
+      </fieldset>
 
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend">{t(locale, 'form.company_label')}</legend>
-    <input type="text" name="company" class="input input-lg w-full validator" placeholder={t(locale, 'form.company_placeholder')} required />
-  </fieldset>
+      <fieldset class="fieldset">
+        <label class="fieldset-legend" for="contact-company">{t(locale, 'form.company_label')}</label>
+        <input id="contact-company" type="text" name="company" class="input input-lg w-full" placeholder={t(locale, 'form.company_placeholder')} autocomplete="organization" />
+      </fieldset>
 
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend">{t(locale, 'form.phone_label')}</legend>
-    <input type="text" name="phone" class="input input-lg w-full validator" placeholder={t(locale, 'form.phone_placeholder')} required />
-  </fieldset>
+      <fieldset class="fieldset">
+        <label class="fieldset-legend" for="contact-phone">{t(locale, 'form.phone_label')}</label>
+        <input id="contact-phone" type="tel" name="phone" class="input input-lg w-full" placeholder={t(locale, 'form.phone_placeholder')} autocomplete="tel" />
+      </fieldset>
+    </div>
 
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend">{t(locale, 'form.message_label')}</legend>
-    <textarea name="message" placeholder={t(locale, 'form.message_placeholder')} class="textarea textarea-lg w-full validator" rows="5" required></textarea>
-  </fieldset>
+    <fieldset class="fieldset">
+      <label class="fieldset-legend" for="contact-message">{t(locale, 'form.message_label')}</label>
+      <textarea id="contact-message" name="message" placeholder={t(locale, 'form.message_placeholder')} class="textarea textarea-lg w-full validator" rows="6" required></textarea>
+    </fieldset>
 
-  <div class="mt-4">
-    <button type="submit" class="btn btn-primary">{t(locale, 'form.submit')}</button>
-  </div>
-</form>
+    <div class="mt-6 flex flex-wrap items-center gap-4">
+      <button type="submit" class="btn btn-primary" data-contact-submit>{t(locale, 'form.submit')}</button>
+      <p class="text-sm text-base-content/55">{t(locale, 'form.privacy_note')}</p>
+    </div>
+
+    <p class="mt-5 hidden rounded-field border border-error/25 bg-error/10 px-4 py-3 text-sm text-error-content" data-contact-error role="alert"></p>
+  </form>
+
+  <section class="hidden py-8 text-center" data-contact-success tabindex="-1">
+    <p class="mb-2 text-xl font-semibold">{t(locale, 'form.success_title')}</p>
+    <p class="mx-auto max-w-md leading-relaxed text-base-content/70">{t(locale, 'form.success_message')}</p>
+    <button type="button" class="btn btn-ghost btn-sm mt-6" data-contact-reset>{t(locale, 'form.success_reset')}</button>
+  </section>
+</div>
+
+<script>
+  const form = document.querySelector('[data-contact-form]');
+
+  if (form instanceof HTMLFormElement) {
+    const submitButton = form.querySelector('[data-contact-submit]');
+    const errorMessage = form.querySelector('[data-contact-error]');
+    const successPanel = form.parentElement?.querySelector('[data-contact-success]');
+    const resetButton = form.parentElement?.querySelector('[data-contact-reset]');
+    const emailInput = form.querySelector('#contact-email');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      if (submitButton instanceof HTMLButtonElement) {
+        submitButton.disabled = true;
+        submitButton.textContent = form.dataset.sending ?? 'Sending…';
+      }
+      errorMessage?.classList.add('hidden');
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+
+        if (!response.ok) throw new Error(`Formspree returned ${response.status}`);
+
+        form.reset();
+        form.classList.add('hidden');
+        successPanel?.classList.remove('hidden');
+        if (successPanel instanceof HTMLElement) successPanel.focus();
+      } catch (error) {
+        if (errorMessage instanceof HTMLElement) {
+          errorMessage.textContent = form.dataset.error ?? 'Unable to send your message right now. Please try again.';
+          errorMessage.classList.remove('hidden');
+        }
+        console.error('Contact form submission failed.', error);
+      } finally {
+        if (submitButton instanceof HTMLButtonElement) {
+          submitButton.disabled = false;
+          submitButton.textContent = form.dataset.submit ?? 'Send message';
+        }
+      }
+    });
+
+    resetButton?.addEventListener('click', () => {
+      successPanel?.classList.add('hidden');
+      form.classList.remove('hidden');
+      if (emailInput instanceof HTMLInputElement) emailInput.focus();
+    });
+  }
+</script>

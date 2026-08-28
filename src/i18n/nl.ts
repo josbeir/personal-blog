@@ -90,7 +90,6 @@ export const nl = {
   posts_page: {
     title: 'Berichten',
     eyebrow: 'Notities over code, tooling en het web',
-    count: '{count} berichten',
     description:
       'Ontdek inzichten over technologie, creativiteit en idee\u00ebn. Verken artikelen over innovatie, probleemoplossing en de menselijke kant van de digitale wereld.',
     intro:
@@ -99,10 +98,15 @@ export const nl = {
 
   contact_page: {
     title: 'Laten we praten',
+    eyebrow: 'Een goed begin',
     description:
       'Neem contact met mij op via het contactformulier. Ik bespreek graag uw projectidee\u00ebn en verken samen samenwerkingsmogelijkheden.',
     intro:
       'Neem gerust rechtstreeks contact met mij op via het onderstaande formulier. Ik hoor graag over uw projectidee\u00ebn en bespreek hoe we kunnen samenwerken om ze tot leven te brengen. Laten we verbinding maken en samen iets geweldigs bouwen!',
+    form_title: 'Vertel me waar je aan werkt',
+    form_description: 'Een beetje context helpt me het probleem te begrijpen en te zien of ik de juiste persoon ben om te helpen.',
+    hint_title: 'Nuttige context',
+    hint: 'Het doel, de huidige opzet, timing en eventuele beperkingen zijn een goed begin.',
   },
 
   form: {
@@ -117,5 +121,11 @@ export const nl = {
     message_label: 'Jouw bericht',
     message_placeholder: 'Hallo!',
     submit: 'Stuur bericht',
+    sending: 'Versturen…',
+    privacy_note: 'Je gegevens worden alleen gebruikt om op je bericht te antwoorden.',
+    success_title: 'Bericht verzonden',
+    success_message: 'Bedankt voor je bericht. Het is onderweg en je blijft gewoon op deze pagina.',
+    success_reset: 'Nog een bericht sturen',
+    error: 'Je bericht kan nu niet worden verzonden. Probeer het straks opnieuw.',
   },
 } as const;

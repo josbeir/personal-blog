@@ -90,7 +90,6 @@ export const fr = {
   posts_page: {
     title: 'Articles',
     eyebrow: 'Notes sur le code, les outils et le web',
-    count: '{count} articles',
     description:
       "D\u00e9couvrez des insights sur la technologie, la cr\u00e9ativit\u00e9 et les id\u00e9es. Explorez des articles sur l'innovation, la r\u00e9solution de probl\u00e8mes et le c\u00f4t\u00e9 humain du monde num\u00e9rique.",
     intro:
@@ -99,10 +98,15 @@ export const fr = {
 
   contact_page: {
     title: 'Parlons-en',
+    eyebrow: 'Un bon point de d\u00e9part',
     description:
       "Contactez-moi via le formulaire. Je suis pr\u00eat \u00e0 discuter de vos id\u00e9es de projet et \u00e0 explorer les opportunit\u00e9s de collaboration.",
     intro:
       "N'h\u00e9sitez pas \u00e0 me contacter directement via le formulaire ci-dessous. Je suis impatient d'entendre vos id\u00e9es de projet et de discuter de la fa\u00e7on dont nous pouvons collaborer pour les concr\u00e9tiser. Connectons-nous et cr\u00e9ons quelque chose d'extraordinaire ensemble !",
+    form_title: 'Parlez-moi de votre projet',
+    form_description: 'Un peu de contexte m’aide à comprendre le besoin et à voir si je suis la bonne personne pour vous aider.',
+    hint_title: 'Contexte utile',
+    hint: 'L’objectif, la configuration actuelle, le calendrier et les éventuelles contraintes sont un excellent point de départ.',
   },
 
   form: {
@@ -117,5 +121,11 @@ export const fr = {
     message_label: 'Votre message',
     message_placeholder: 'Bonjour !',
     submit: 'Envoyer le message',
+    sending: 'Envoi…',
+    privacy_note: 'Vos coordonnées ne sont utilisées que pour répondre à votre message.',
+    success_title: 'Message envoyé',
+    success_message: 'Merci de votre message. Il est en route et vous restez sur cette page.',
+    success_reset: 'Envoyer un autre message',
+    error: 'Impossible d’envoyer votre message pour le moment. Veuillez réessayer un peu plus tard.',
   },
 } as const;

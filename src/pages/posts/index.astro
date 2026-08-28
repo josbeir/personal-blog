@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostTeaser from '../../components/PostTeaser.astro';
-import PostsPageIntro from '../../components/PostsPageIntro.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import { getPostsPageData } from '../../i18n/index';
 import { getCollection } from 'astro:content';
 
@@ -12,7 +12,7 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout title={data.title} description={data.description}>
-  <PostsPageIntro {...data} countLabel={data.count.replace('{count}', String(posts.length))} />
+  <PageIntro {...data} />
 
   <div class="grid gap-6 md:grid-cols-3">
     {posts.map((post) => <PostTeaser post={post} />)}

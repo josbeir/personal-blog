@@ -109,7 +109,6 @@ export function getPostsPageData(locale: string) {
     description: t(locale, 'posts_page.description'),
     eyebrow: t(locale, 'posts_page.eyebrow'),
     intro: t(locale, 'posts_page.intro'),
-    count: t(locale, 'posts_page.count'),
   };
 }
 
@@ -117,7 +116,12 @@ export function getContactPageData(locale: string) {
   return {
     title: t(locale, 'contact_page.title'),
     description: t(locale, 'contact_page.description'),
+    eyebrow: t(locale, 'contact_page.eyebrow'),
     intro: t(locale, 'contact_page.intro'),
+    formTitle: t(locale, 'contact_page.form_title'),
+    formDescription: t(locale, 'contact_page.form_description'),
+    hintTitle: t(locale, 'contact_page.hint_title'),
+    hint: t(locale, 'contact_page.hint'),
   };
 }
 

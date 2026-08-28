@@ -90,7 +90,6 @@ export const en = {
   posts_page: {
     title: 'Posts',
     eyebrow: 'Notes on code, tools and the web',
-    count: '{count} posts',
     description:
       'Discover insights on technology, creativity, and ideas. Explore articles on innovation, problem-solving, and the human side of the digital world.',
     intro:
@@ -99,10 +98,15 @@ export const en = {
 
   contact_page: {
     title: "Let's talk",
+    eyebrow: 'A good place to start',
     description:
       "Get in touch with me through the contact form. I'm ready to discuss your project ideas and explore collaboration opportunities.",
     intro:
       "Feel free to reach out to me directly via the contact form below. I'm eager to hear about your project ideas and discuss how we can collaborate to bring them to life. Let's connect and make something awesome together!",
+    form_title: 'Tell me what you are working on',
+    form_description: 'A little context helps me understand the problem and whether I am the right person to help.',
+    hint_title: 'Useful context',
+    hint: 'The goal, current setup, timeline, and any constraints are a great place to start.',
   },
 
   form: {
@@ -117,5 +121,11 @@ export const en = {
     message_label: 'Your message',
     message_placeholder: 'Hi there!',
     submit: 'Contact me',
+    sending: 'Sending…',
+    privacy_note: 'Your details are only used to reply to your message.',
+    success_title: 'Message sent',
+    success_message: 'Thanks for getting in touch. Your message is on its way and this page stays right here.',
+    success_reset: 'Send another message',
+    error: 'Unable to send your message right now. Please try again shortly.',
   },
 } as const;

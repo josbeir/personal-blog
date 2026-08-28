@@ -1,14 +1,11 @@
 ---
-import { BookOpen } from '@lucide/astro';
-
 interface Props {
   title: string;
   eyebrow: string;
   intro: string;
-  countLabel: string;
 }
 
-const { title, eyebrow, intro, countLabel } = Astro.props;
+const { title, eyebrow, intro } = Astro.props;
 const paragraphs = intro.split('\n\n');
 ---
 
@@ -17,7 +14,7 @@ const paragraphs = intro.split('\n\n');
   <div class="pointer-events-none absolute bottom-[-7rem] left-[38%] h-56 w-56 rounded-full border border-base-content/10"></div>
 
   <div class="relative mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-18">
-    <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+    <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
       <div>
         <p class="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary">{eyebrow}</p>
         <h1 class="max-w-3xl text-5xl font-bold leading-[0.95] tracking-tight md:text-6xl">{title}</h1>
@@ -30,11 +27,6 @@ const paragraphs = intro.split('\n\n');
           </p>
         ))}
       </div>
-    </div>
-
-    <div class="mt-10 flex items-center gap-2 border-t border-base-content/10 pt-5 text-sm font-medium text-base-content/60">
-      <BookOpen class="h-4 w-4 text-primary" strokeWidth={1.8} aria-hidden="true" />
-      <span>{countLabel}</span>
     </div>
   </div>
 </section>
