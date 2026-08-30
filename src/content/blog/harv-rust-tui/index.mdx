@@ -1,6 +1,6 @@
 ---
-title: "Harv — Time tracking that lives in your terminal"
-description: "Meet Harv, a blazing-fast terminal UI for Harvest time tracking. Built in Rust with ratatui, and yes — I vibe-coded the whole thing."
+title: "Harv: Time tracking that lives in your terminal"
+description: "Meet Harv, a blazing-fast terminal UI for Harvest time tracking. Built in Rust with ratatui, and yes, I vibe-coded the whole thing."
 date: 2026-07-20
 tags:
   - rust
@@ -11,7 +11,7 @@ tags:
 image: ./teaser.png
 ---
 
-I've been using [Harvest](https://www.getharvest.com/), the time-tracking tool, for years, and every time I reach for the browser to start a timer, a small part of me dies inside. So I decided to fix that — properly this time.
+I've been using [Harvest](https://www.getharvest.com/), the time-tracking tool, for years, and every time I reach for the browser to start a timer, a small part of me dies inside. So I decided to fix that properly this time.
 
 Say hello to [**Harv**](https://github.com/josbeir/harv).
 
@@ -19,13 +19,13 @@ Say hello to [**Harv**](https://github.com/josbeir/harv).
 $ harv
 ```
 
-That's it. No subcommand, no flags. Just `harv` — and you're in a full-screen terminal dashboard with your timesheet, running timers, and a keyboard shortcut for everything.
+That's it. No subcommand, no flags. Just `harv`, and you're in a full-screen terminal dashboard with your timesheet, running timers, and a keyboard shortcut for everything.
 
 ![Harv TUI dashboard](https://raw.githubusercontent.com/josbeir/harv/main/assets/entries.png)
 
 ## The terminal is your happy place
 
-I live in the terminal. My editor, my git, my builds, my deploys — everything happens behind a blinking cursor. The one thing that kept pulling me out? _Starting a timer in Harvest._
+I live in the terminal. My editor, my git, my builds, my deploys: everything happens behind a blinking cursor. The one thing that kept pulling me out? _Starting a timer in Harvest._
 
 Browser tab. Click project dropdown. Scroll through 40 projects. Click task. Click start. Every. Single. Time.
 
@@ -34,7 +34,7 @@ Harv replaces all of that with muscle memory:
 | Key | Does |
 |-----|------|
 | `s` | Start a timer. Fuzzy-search your project, pick a task, go. |
-| `n` | Log hours directly — with an interactive date picker |
+| `n` | Log hours directly with an interactive date picker |
 | `e` | Edit any entry inline |
 | `x` | Stop the running timer |
 | `j` `k` | Navigate up and down |
@@ -54,24 +54,24 @@ Harv goes well beyond a simple start/stop timer:
 $ harv start dev
 ```
 
-**Project config files.** Drop a `harv.toml` in your project root and Harv knows which project and task to pre-select. Define note templates that pull from git — branch names, commit messages, your Harvest user name:
+**Project config files.** Drop a `harv.toml` in your project root and Harv knows which project and task to pre-select. Define note templates that pull from git: branch names, commit messages and your Harvest user name:
 
 ```toml
 [templates.standup]
-pattern = "Daily standup — {branch_name} — {commit_message}"
+pattern = "Daily standup: {branch_name} - {commit_message}"
 ```
 
 **Automatic dark/light mode.** Harv detects your OS theme in real time. Switch to dark mode at sunset? Harv follows along without missing a beat. Two full color palettes, instant switching.
 
-**Six languages.** English, Dutch, French, German, Spanish, Italian. Auto-detected from your system locale, or set it explicitly. Every label, every error message, every CLI prompt — translated and locale-aware.
+**Six languages.** English, Dutch, French, German, Spanish, Italian. Auto-detected from your system locale, or set it explicitly. Every label, error message and CLI prompt is translated and locale-aware.
 
-**Built-in update notifications.** When a new release drops on GitHub, Harv tells you right in the TUI top bar. Because checking for updates manually is a web browser problem — and we're not doing that anymore.
+**Built-in update notifications.** When a new release drops on GitHub, Harv tells you right in the TUI top bar. Checking for updates manually is a web browser problem, and we're not doing that anymore.
 
 ## Yes, I vibe-coded it. Yes, it's production quality.
 
 Harv is my first Rust project aimed at real daily use. I've been writing PHP and TypeScript for a decade. Rust was a language I understood conceptually but had never shipped with.
 
-So I did what any reasonable developer does in 2026: I paired with AI agents. Not to write the code for me — but to keep me honest. Every change goes through a pipeline:
+So I did what any reasonable developer does in 2026: I paired with AI agents. Not to write the code for me, but to keep me honest. Every change goes through a pipeline:
 
 ```
 $ cargo fmt --all -- --check    # Formatting
@@ -81,9 +81,9 @@ $ cargo test --workspace        # All tests must pass
 
 No exceptions. The CI enforces this on every push. The result: **521 passing tests, zero clippy warnings, 5-platform cross-compilation**, and a codebase where 70% of the lines are test code.
 
-This quality-first pipeline is what makes AI-assisted development sustainable. The AI generates, the linter catches, the tests verify, and I make the architectural calls. It's not "AI writes code" — it's "AI accelerates, quality gates protect."
+This quality-first pipeline is what makes AI-assisted development sustainable. The AI generates, the linter catches, the tests verify, and I make the architectural calls. It is not "AI writes code"; it is "AI accelerates, quality gates protect."
 
-The project ships as a single binary. No runtime, no dependencies to install. Cross-compiled for Linux, macOS, and Windows — both x86_64 and ARM64.
+The project ships as a single binary. No runtime, no dependencies to install. It is cross-compiled for Linux, macOS and Windows, on both x86_64 and ARM64.
 
 ## Try it in 30 seconds
 
@@ -112,7 +112,7 @@ Rust was on my radar for years. I'd read the book, followed the blogs, admired t
 - Pattern matching and algebraic types make state machines trivial
 - `cargo doc --open` is the best documentation experience in any language I've used
 - Cross-compilation for five platforms from a single `Cargo.toml` still feels like magic
-- The testing culture is contagious — when writing tests is this frictionless, you just do it
+- The testing culture is contagious. When writing tests is this frictionless, you just do it.
 
 Harv didn't teach me Rust from scratch. It took my theoretical understanding and made it _operational_. There's a difference between knowing what a `Mutex` is and debugging a poisoned one in CI at 11 PM.
 

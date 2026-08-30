@@ -1,0 +1,92 @@
+---
+title: "AI, Drupal and the Comfort of a DDEV Snapshot"
+description: "A small DDEV snapshot routine gives AI-assisted Drupal work a reversible local database checkpoint, while Git and quality gates remain the foundation."
+date: 2026-08-30
+tags:
+  - ddev
+  - drupal
+  - ai
+  - development-workflow
+image: ./teaser.png
+---
+
+import { Image } from "astro:assets";
+import snapshotSafetyNet from "./snapshot-safety-net.png";
+
+I use [DDEV](https://ddev.com/) whenever a PHP or Node.js project needs more than a simple runtime: a database, a web server, mail capture or other supporting services. It gives each project a portable local environment and a familiar set of commands without making me rebuild the setup every time.
+
+For Drupal projects, one of its simplest features gives me the most comfort when working with AI: fast [database snapshots](https://docs.ddev.com/en/stable/users/usage/cli/#snapshotting-and-restoring-a-database). Before letting an agent loose, I take that tiny pause. The checkpoint gives my mind a rest because I know an experiment can be undone if it changes more state than I expected.
+
+## Git does not contain your whole Drupal environment
+
+Git is excellent at protecting the things it tracks: PHP, Twig, YAML, Composer files and exported configuration. In a Drupal workflow, [`drush cex`](https://www.drush.org/14.x/commands/config_export/) exports active configuration to the sync directory, where its changes can be reviewed and committed. [`drush cim`](https://www.drush.org/14.x/commands/config_import/) imports configuration from that directory into Drupal's active configuration. A branch and a few small commits make an AI-assisted change easy to inspect, compare and revert.
+
+But a realistic local Drupal environment also has a live database. It may contain content, schema changes, cache state, configuration and migration results. `cex` and `cim` are essential configuration tools, but they do not restore arbitrary content or the whole prior database state. An agent can touch several of those things in one session through Drush, update hooks, imports or bulk operations. Git does not version the database volume.
+
+That is the gap a DDEV snapshot fills. It is a quick, local database checkpoint, not a replacement for source control or a backup strategy for production.
+
+<figure class="not-prose my-10 overflow-hidden rounded-2xl bg-slate-100">
+  <Image
+    src={snapshotSafetyNet}
+    alt="A cheerful AI robot sends code changes towards a database, with a glowing snapshot checkpoint and safety rails representing Git and quality checks."
+    loading="lazy"
+    class="w-full"
+  />
+  <figcaption class="px-5 py-4 text-center text-sm text-slate-600">
+    Let the experiment move quickly; make its database state easy to bring back.
+  </figcaption>
+</figure>
+
+## A snapshot buys mental space
+
+The point is not that AI agents are inherently reckless. They simply make it cheap to try a lot, quickly. The uneasy moment comes when an agent moves from editing files to running update hooks or Drush commands. The Git diff may still look manageable while the database has already moved several steps ahead.
+
+Taking a snapshot before an update, migration, configuration import or bulk content task changes the feeling of the work. If the result is wrong, recovery is a known command instead of a small forensic project.
+
+```bash
+ddev snapshot
+
+# Let the agent work.
+
+ddev snapshot restore --latest
+```
+
+That is the complete routine. You can see what is available with `ddev snapshot --list` and restore the most recent snapshot with `ddev snapshot restore --latest`. For longer experiments with several checkpoints, `ddev snapshot --name before-search-reindex` can still make the list easier to understand.
+
+## The tiny routine before an agent starts
+
+For anything that may change database state, I tend to make both kinds of checkpoint:
+
+```bash
+git status
+git switch -c ai/drupal-update-experiment
+git add -p
+git commit -m "chore: checkpoint before Drupal update experiment"
+ddev snapshot
+```
+
+If the working tree is already clean, there is nothing to commit before creating the branch and snapshot. Otherwise, `git add -p` lets me review exactly what belongs in the checkpoint instead of staging everything.
+
+Then I let the agent do the bounded piece of work. If it succeeds, I review the diff, run `ddev drush cex` when configuration changed, inspect the export and make another deliberate commit. If the database state is bad, I restore the snapshot; if the files are bad, Git gives me the tools to inspect or revert them.
+
+Snapshots are especially useful before:
+
+- Drupal core or contributed-module updates
+- migrations and Drush scripts
+- configuration imports
+- bulk entity or content changes
+- a longer autonomous session against a realistic local dataset
+
+## Snapshots are not the quality gate
+
+A snapshot is rollback insurance. It is not permission to skip the things that stop bad changes from travelling further.
+
+The order of importance is clear to me:
+
+- Good quality gates come first: clear agent boundaries, review, tests, static analysis, linting, CI and a careful deploy process.
+- Git branches and regular commits make code and configuration changes reviewable and reversible.
+- DDEV snapshots protect the local database state that those tools do not capture.
+
+They are also deliberately local. A snapshot does not cover uploaded files, external services, Git history or production recovery. Keep real backups and production safeguards for those jobs.
+
+AI makes experimentation faster. A snapshot makes the stateful part of that experimentation feel safely reversible. Before the next agent runs a migration or config import, make the checkpoint first, then give it room to work.
