@@ -34,6 +34,7 @@ const ignoredRepositories = new Set([
   'cakephp-image',
   'zed-latte',
   'tree-sitter-latte',
+  'cakephp-docs-conversion',
 ]);
 
 function sortByName(projects: GitHubProject[]) {
